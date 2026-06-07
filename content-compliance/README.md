@@ -7,6 +7,38 @@ Portable Codex / Claude Code skill for reviewing self-media topics, scripts, and
 - Topic Gate: check whether a topic is worth producing before writing the script.
 - Draft Review: check title, script, oral draft, subtitles, visual description, comment plan, private-message plan, and promotion plan before publishing or promoting.
 
+## Invocation
+
+Skill machine name:
+
+```text
+content-compliance
+```
+
+Recommended Chinese name:
+
+```text
+内容合规检测
+```
+
+Daily Chinese triggers:
+
+```text
+检测
+合规检测
+帮我审一下抖音选题
+帮我查一下小红书稿子风险
+```
+
+Slash-command aliases, where supported:
+
+```text
+/检测
+/content-compliance
+```
+
+If a runtime does not support non-ASCII slash-command names, use `/content-compliance` or ask naturally in Chinese.
+
 ## Supported Platforms
 
 - Douyin, including DOU+ and OceanEngine contexts.

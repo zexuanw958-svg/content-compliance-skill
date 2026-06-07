@@ -34,6 +34,8 @@ REQUIRED_FILES = [
     "references/official-source-intake.md",
     "references/research/douyin-official-sources.md",
     "references/research/xiaohongshu-official-sources.md",
+    "commands/检测.md",
+    "commands/content-compliance.md",
     "examples/douyin-topic-gate.md",
     "examples/douyin-draft-review.md",
     "examples/xiaohongshu-topic-gate.md",
@@ -184,10 +186,19 @@ class ContentComplianceSkillTest(unittest.TestCase):
             "needs_review",
             "not in confirmed risks or final score",
             "这条风险只能作为待复核提示，因为当前规则卡处于 `needs_review`，官方来源覆盖范围或规则解释仍需人工复核。",
+            "/检测",
+            "/content-compliance",
+            "合规检测",
         ]
         missing = [phrase for phrase in required_phrases if phrase not in skill]
         self.assertEqual(missing, [])
         self.assertNotIn("这条风险只能作为待复核提示，因为当前规则卡尚未绑定足够官方来源。", skill)
+
+    def test_command_aliases_delegate_to_skill(self):
+        for relative_path in ["commands/检测.md", "commands/content-compliance.md"]:
+            content = read_package_file(relative_path)
+            self.assertIn("content-compliance", content)
+            self.assertIn("../SKILL.md", content)
 
     def test_scored_example_rules_are_active(self):
         statuses = parse_rule_statuses(["rules/douyin.md", "rules/xiaohongshu.md"])

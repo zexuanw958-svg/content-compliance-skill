@@ -1,9 +1,28 @@
 ---
 name: content-compliance
-description: Review Douyin and Xiaohongshu self-media topics, scripts, and visual descriptions using official-source-backed platform rule cards, a 1-10 risk score, rewrite suggestions, and a mandatory disclaimer.
+description: Review Douyin and Xiaohongshu self-media topics, scripts, and visual descriptions using official-source-backed platform rule cards, a 1-10 risk score, rewrite suggestions, and a mandatory disclaimer. Use when the user says 检测, 合规检测, 内容合规, 审一下抖音/小红书选题, 查一下稿子风险, or asks whether a topic/script/visual plan can be posted or promoted.
 ---
 
 # Content Compliance Skill
+
+## Invocation
+
+Preferred Chinese trigger:
+
+```text
+检测
+合规检测
+内容合规检测
+帮我审一下抖音/小红书选题
+帮我查一下这段稿子有没有违规风险
+```
+
+Slash-command aliases, when the runtime supports bundled commands:
+
+```text
+/检测
+/content-compliance
+```
 
 Use this skill when the user wants to check whether a self-media topic, title, script, oral draft, subtitle plan, visual description, or promotion plan is likely to create compliance risk on Douyin or Xiaohongshu.
 
