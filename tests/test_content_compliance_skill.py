@@ -90,6 +90,25 @@ class ContentComplianceSkillTest(unittest.TestCase):
         )
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
+    def test_skill_instructions_include_required_workflows(self):
+        skill = read_package_file("SKILL.md")
+        required_phrases = [
+            "Topic Gate",
+            "Draft Review",
+            "rules/douyin.md",
+            "rules/xiaohongshu.md",
+            "templates/report.md",
+            "mandatory disclaimer",
+            "Only `Status: active`",
+            "final score",
+            "needs_review",
+            "not in confirmed risks or final score",
+            "这条风险只能作为待复核提示，因为当前规则卡处于 `needs_review`，官方来源覆盖范围或规则解释仍需人工复核。",
+        ]
+        missing = [phrase for phrase in required_phrases if phrase not in skill]
+        self.assertEqual(missing, [])
+        self.assertNotIn("这条风险只能作为待复核提示，因为当前规则卡尚未绑定足够官方来源。", skill)
+
     def test_sources_file_contains_required_official_domains(self):
         sources = read_package_file("references/sources.md")
         required_domains = [
