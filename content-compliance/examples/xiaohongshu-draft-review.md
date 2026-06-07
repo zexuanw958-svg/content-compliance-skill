@@ -16,9 +16,12 @@
 - Recommendation: 修改后再发布；如计划薯条，应移除评论区领取和私信资源交付表达。
 - Risk Score: 7/10
 - Matched Risk:
+  - Rule: xiaohongshu.promotion.shutiao_review_stricter_context
+  - Evidence: 明确计划投放薯条，且标题“资料包直接拿”、正文“评论区回复关键词”、首图“评论区领链接”形成资源领取 CTA，进入付费推广审核时会触发更严格的营销质量复核。
+  - Safer Revision: 如计划薯条，移除评论区领取、私信交付或资源包直接获取表达，改为介绍项目名称、适用场景和安全校验方法。
+- 待复核提示:
   - Rule: xiaohongshu.guidance.external_contact_or_download
-  - Evidence: 标题“资料包直接拿”、正文“评论区回复关键词”、首图“评论区领链接”。
-  - Safer Revision: 改为介绍项目名称、适用场景和安全校验方法，不把评论区或私信作为资源获取路径。
+  - Note: 这条风险只能作为待复核提示，因为当前规则卡处于 `needs_review`，官方来源覆盖范围或规则解释仍需人工复核。它不支持本示例的 `Risk Score`。
 
 ## Disclaimer
 

@@ -2,6 +2,7 @@ import contextlib
 import io
 import importlib.util
 from pathlib import Path
+import re
 import shutil
 import subprocess
 import sys
@@ -35,6 +36,37 @@ REQUIRED_FILES = [
 
 def read_package_file(relative_path: str) -> str:
     return (PACKAGE / relative_path).read_text(encoding="utf-8")
+
+
+def parse_rule_statuses(relative_paths: list[str]) -> dict[str, str]:
+    statuses = {}
+    for relative_path in relative_paths:
+        current_rule = None
+        for line in read_package_file(relative_path).splitlines():
+            rule_match = re.match(r"Rule ID:\s*(\S+)\s*$", line)
+            if rule_match:
+                current_rule = rule_match.group(1)
+                continue
+
+            status_match = re.match(r"Status:\s*(\S+)\s*$", line)
+            if status_match and current_rule:
+                statuses[current_rule] = status_match.group(1)
+                current_rule = None
+    return statuses
+
+
+def scored_rules_in_example(relative_path: Path) -> list[str]:
+    rules = []
+    pending_review_boundaries = ("- Pending Review Notes:", "- 待复核提示:")
+    for line in relative_path.read_text(encoding="utf-8").splitlines():
+        stripped_line = line.strip()
+        if stripped_line in pending_review_boundaries:
+            break
+
+        rule_match = re.match(r"\s*-\s*Rule:\s*([A-Za-z0-9_.-]+)\s*$", line)
+        if rule_match:
+            rules.append(rule_match.group(1))
+    return rules
 
 
 def load_validator_module():
@@ -108,6 +140,18 @@ class ContentComplianceSkillTest(unittest.TestCase):
         missing = [phrase for phrase in required_phrases if phrase not in skill]
         self.assertEqual(missing, [])
         self.assertNotIn("这条风险只能作为待复核提示，因为当前规则卡尚未绑定足够官方来源。", skill)
+
+    def test_scored_example_rules_are_active(self):
+        statuses = parse_rule_statuses(["rules/douyin.md", "rules/xiaohongshu.md"])
+        failures = []
+
+        for example_path in (PACKAGE / "examples").glob("*.md"):
+            for rule_id in scored_rules_in_example(example_path):
+                status = statuses.get(rule_id)
+                if status != "active":
+                    failures.append(f"{example_path.name}: {rule_id} is {status or 'missing'}")
+
+        self.assertEqual(failures, [])
 
     def test_sources_file_contains_required_official_domains(self):
         sources = read_package_file("references/sources.md")
