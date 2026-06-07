@@ -5,6 +5,14 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE_ID_RE = re.compile(r"source\.[A-Za-z0-9_.-]+")
+ALLOWED_STATUSES = {"active", "needs_review", "deprecated"}
+MIN_DECLARED_SOURCE_IDS = 6
+REQUIRED_OFFICIAL_DOMAINS = [
+    "95152.douyin.com",
+    "support.oceanengine.com",
+    "pgy.xiaohongshu.com",
+    "e.xiaohongshu.com",
+]
 
 
 REQUIRED_FILES = [
@@ -60,33 +68,106 @@ def ensure_scoring_constants() -> None:
         fail(f"scoring constants missing: {missing}")
 
 
-def ensure_rule_cards_have_source_ids() -> None:
+def iter_rule_cards():
     for rule_path in ["rules/douyin.md", "rules/xiaohongshu.md"]:
         content = read(rule_path)
         cards = re.findall(r"Rule ID: .+?(?=\n```|\nRule ID: |\Z)", content, flags=re.S)
         if not cards:
             fail(f"no rule cards found in {rule_path}")
         for card in cards:
-            official_sources = re.search(r"^Official Sources:[ \t]*([^\n]*)$", card, flags=re.M)
-            if not official_sources:
-                fail(f"rule card missing Official Sources in {rule_path}: {card[:120]}")
-            official_source_value = official_sources.group(1).strip()
-            if not official_source_value:
-                fail(f"rule card has empty Official Sources in {rule_path}: {card[:120]}")
-            source_ids = [source_id.strip() for source_id in official_source_value.split(",")]
-            invalid_source_ids = [source_id for source_id in source_ids if not SOURCE_ID_RE.fullmatch(source_id)]
-            if invalid_source_ids:
-                fail(
-                    f"rule card Official Sources has invalid source ids in {rule_path}: "
-                    f"{invalid_source_ids}"
-                )
+            yield rule_path, card
+
+
+def extract_rule_source_ids(rule_path: str, card: str) -> list[str]:
+    official_sources = re.search(r"^Official Sources:[ \t]*([^\n]*)$", card, flags=re.M)
+    if not official_sources:
+        fail(f"rule card missing Official Sources in {rule_path}: {card[:120]}")
+    official_source_value = official_sources.group(1).strip()
+    if not official_source_value:
+        fail(f"rule card has empty Official Sources in {rule_path}: {card[:120]}")
+    source_ids = [source_id.strip() for source_id in official_source_value.split(",")]
+    invalid_source_ids = [source_id for source_id in source_ids if not SOURCE_ID_RE.fullmatch(source_id)]
+    if invalid_source_ids:
+        fail(
+            f"rule card Official Sources has invalid source ids in {rule_path}: "
+            f"{invalid_source_ids}"
+        )
+    return source_ids
+
+
+def parse_declared_source_ids(sources: str) -> set[str]:
+    source_ids = set()
+    invalid_source_ids = []
+    for line in sources.splitlines():
+        stripped = line.strip()
+        if not stripped.startswith("|"):
+            continue
+        cells = [cell.strip() for cell in stripped.strip("|").split("|")]
+        if not cells or cells[0] in {"Source ID", "---"}:
+            continue
+        source_id = cells[0]
+        if SOURCE_ID_RE.fullmatch(source_id):
+            source_ids.add(source_id)
+        elif source_id.startswith("source."):
+            invalid_source_ids.append(source_id)
+    if invalid_source_ids:
+        fail(f"sources inventory has invalid source ids: {invalid_source_ids}")
+    return source_ids
+
+
+def ensure_sources_inventory() -> set[str]:
+    sources = read("references/sources.md")
+    missing_domains = [domain for domain in REQUIRED_OFFICIAL_DOMAINS if domain not in sources]
+    if missing_domains:
+        fail(f"sources inventory missing required official domains: {missing_domains}")
+    declared_source_ids = parse_declared_source_ids(sources)
+    if len(declared_source_ids) < MIN_DECLARED_SOURCE_IDS:
+        fail(
+            "sources inventory has too few declared source ids: "
+            f"{len(declared_source_ids)} found, expected at least {MIN_DECLARED_SOURCE_IDS}"
+        )
+    return declared_source_ids
+
+
+def ensure_rule_cards_have_source_ids() -> None:
+    for rule_path, card in iter_rule_cards():
+        extract_rule_source_ids(rule_path, card)
+
+
+def ensure_rule_card_sources_are_declared(declared_source_ids: set[str]) -> None:
+    for rule_path, card in iter_rule_cards():
+        source_ids = extract_rule_source_ids(rule_path, card)
+        undeclared_source_ids = [
+            source_id for source_id in source_ids if source_id not in declared_source_ids
+        ]
+        if undeclared_source_ids:
+            fail(
+                f"rule card Official Sources has undeclared sources in {rule_path}: "
+                f"{undeclared_source_ids}"
+            )
+
+
+def ensure_rule_cards_have_valid_statuses() -> None:
+    for rule_path, card in iter_rule_cards():
+        status = re.search(r"^Status:[ \t]*([^\n]*)$", card, flags=re.M)
+        if not status:
+            fail(f"rule card missing Status in {rule_path}: {card[:120]}")
+        status_value = status.group(1).strip()
+        if status_value not in ALLOWED_STATUSES:
+            fail(
+                f"rule card has invalid Status in {rule_path}: "
+                f"{status_value!r}; expected one of {sorted(ALLOWED_STATUSES)}"
+            )
 
 
 def main() -> int:
     ensure_required_files()
     ensure_disclaimer()
     ensure_scoring_constants()
+    declared_source_ids = ensure_sources_inventory()
     ensure_rule_cards_have_source_ids()
+    ensure_rule_card_sources_are_declared(declared_source_ids)
+    ensure_rule_cards_have_valid_statuses()
     print("content-compliance skill validation passed")
     return 0
 

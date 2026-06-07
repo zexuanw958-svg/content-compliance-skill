@@ -2,6 +2,15 @@
 
 Only official platform, official help-center, official rule-center, official safety-center, or official commercialization-platform pages count as confirmed sources.
 
+## Required Official Domain Coverage
+
+The validation gate requires this inventory to include these official domains:
+
+- `95152.douyin.com`
+- `support.oceanengine.com`
+- `pgy.xiaohongshu.com`
+- `e.xiaohongshu.com`
+
 | Source ID | Platform | Scope | Official URL | Page Title | Access Date | Page Updated Date | Retrieval Status | Review Status |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | source.douyin.safety_center | Douyin | safety_center | https://95152.douyin.com/ | Douyin safety and trust center | 2026-06-07 | not visible in initial entry | reachable | needs_review |

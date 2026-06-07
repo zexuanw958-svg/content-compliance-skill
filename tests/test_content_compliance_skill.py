@@ -2,6 +2,7 @@ import contextlib
 import io
 import importlib.util
 from pathlib import Path
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -89,6 +90,17 @@ class ContentComplianceSkillTest(unittest.TestCase):
         )
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
+    def test_sources_file_contains_required_official_domains(self):
+        sources = read_package_file("references/sources.md")
+        required_domains = [
+            "95152.douyin.com",
+            "support.oceanengine.com",
+            "pgy.xiaohongshu.com",
+            "e.xiaohongshu.com",
+        ]
+        missing = [domain for domain in required_domains if domain not in sources]
+        self.assertEqual(missing, [])
+
     def test_validator_requires_source_id_in_official_sources_field(self):
         validator = load_validator_module()
 
@@ -136,6 +148,46 @@ class ContentComplianceSkillTest(unittest.TestCase):
                         validator.ensure_rule_cards_have_source_ids()
             finally:
                 validator.ROOT = original_root
+
+    def test_validator_rejects_undeclared_source_id(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_root = Path(temp_dir)
+            copied_package = temp_root / "content-compliance"
+            shutil.copytree(PACKAGE, copied_package)
+
+            rule_file = copied_package / "rules" / "douyin.md"
+            original = rule_file.read_text(encoding="utf-8")
+            rule_file.write_text(
+                original
+                + """
+
+Rule ID: douyin.test.undeclared_source
+Platform: Douyin
+Scope: ordinary_post
+Rule Name: Test undeclared source
+Severity: 1
+Trigger Scenarios: test only
+High-Risk Signals: test only
+Lower-Risk Alternatives: test only
+Review Questions: test only
+Evidence Extraction: test only
+Official Sources: source.not_declared
+Source Access Date: 2026-06-07
+Status: active
+""",
+                encoding="utf-8",
+            )
+
+            result = subprocess.run(
+                [sys.executable, str(copied_package / "scripts" / "validate_skill.py")],
+                cwd=temp_root,
+                text=True,
+                capture_output=True,
+                check=False,
+            )
+            output = result.stdout + result.stderr
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("undeclared sources", output)
 
     def test_validator_accepts_declared_source_id_token_format(self):
         validator = load_validator_module()
