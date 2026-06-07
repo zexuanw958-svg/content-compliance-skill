@@ -13,19 +13,19 @@
 
 - Platform: Xiaohongshu
 - Phase: draft_review
-- Recommendation: 修改后再发布；如计划薯条，应移除评论区领取和私信资源交付表达。
-- Risk Score: 6/10
+- Recommendation: 先人工复核并修改后再发布；如计划薯条，应移除评论区领取和私信资源交付表达。
+- Risk Score: 3/10
 - Score Breakdown:
-  - severity: 3, from the single scored active Shutiao stricter-review context rule.
-  - confidence: 1.0, because the draft explicitly plans Shutiao promotion and includes resource-claim CTA wording.
-  - exposure: 1.5, because the note is planned for paid promotion rather than ordinary posting only.
-  - scenario: 1.4, because the issue appears in a confirmed promotion-review scenario.
-  - fix_difficulty: 1.5, because the title, body, and cover CTA all need coordinated edits.
-  - accumulation: 0; the matched guidance/download rule is `needs_review` and remains a pending-review note, so it is not scored.
-- Matched Risk:
-  - Rule: xiaohongshu.promotion.shutiao_review_stricter_context
-  - Evidence: 明确计划投放薯条，且标题“资料包直接拿”、正文“评论区回复关键词”、首图“评论区领链接”形成资源领取 CTA，进入付费推广审核时会触发更严格的营销质量复核。
-  - Safer Revision: 如计划薯条，移除评论区领取、私信交付或资源包直接获取表达，改为介绍项目名称、适用场景和安全校验方法。
+  - severity: none; no confirmed `Status: active` rule independently scores the resource-claim wording.
+  - confidence: pending-review only; the draft clearly includes resource-claim wording, but the directly relevant guidance/download rule is `needs_review`.
+  - exposure: planned paid promotion increases review attention, but exposure is not item-scored without an independently matched active rule.
+  - scenario: baseline caution for a draft-review uncertainty with planned Shutiao distribution and pending-review acquisition signals.
+  - fix_difficulty: low to medium; title, body, and cover CTA should be edited together before manual review.
+  - accumulation: 0; no active matched risks are scored and the pending guidance/download note is excluded from the final score.
+- Matched Risks: none confirmed under `Status: active` rules.
+- Required Checks:
+  - Before scoring a higher risk, verify whether the same evidence independently matches an active Shutiao category, qualification, false-marketing, or low-quality-marketing rule.
+  - Do not score the comment/link acquisition concern through the Shutiao context rule unless a directly supported active rule is added.
 - 待复核提示:
   - Rule: xiaohongshu.guidance.external_contact_or_download
   - Note: 这条风险只能作为待复核提示，因为当前规则卡处于 `needs_review`，官方来源覆盖范围或规则解释仍需人工复核。它不支持本示例的 `Risk Score`。

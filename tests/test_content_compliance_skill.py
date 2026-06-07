@@ -200,6 +200,28 @@ class ContentComplianceSkillTest(unittest.TestCase):
 
         self.assertEqual(failures, [])
 
+    def test_douyin_active_qualification_rule_excludes_dou_plus_scope(self):
+        rules = read_package_file("rules/douyin.md")
+        rule_block = re.search(
+            r"Rule ID: douyin\.advertising\.qualification_or_industry_restriction"
+            r".+?Status: active",
+            rules,
+            flags=re.S,
+        )
+        self.assertIsNotNone(rule_block)
+        self.assertIn("Scope: oceanengine_ad_review", rule_block.group(0))
+        self.assertNotIn("dou_plus", rule_block.group(0))
+
+    def test_xiaohongshu_pending_guidance_example_is_not_scored(self):
+        example_path = PACKAGE / "examples" / "xiaohongshu-draft-review.md"
+        content = example_path.read_text(encoding="utf-8")
+        scored_section = content.split("- 待复核提示:", 1)[0]
+
+        self.assertIn("Matched Risks: none confirmed under `Status: active` rules.", content)
+        self.assertIn("它不支持本示例的 `Risk Score`", content)
+        self.assertNotIn("Rule: xiaohongshu.guidance.external_contact_or_download", scored_section)
+        self.assertNotIn("Rule: xiaohongshu.promotion.shutiao_review_stricter_context", scored_section)
+
     def test_sources_file_contains_required_official_domains(self):
         sources = read_package_file("references/sources.md")
         required_domains = [

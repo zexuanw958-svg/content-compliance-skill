@@ -110,11 +110,11 @@ Platform: Xiaohongshu
 Scope: shutiao_promotion_review
 Rule Name: Shutiao promotion triggers stricter category, qualification, and marketing-quality review
 Severity: 3
-Trigger Scenarios: A note that may be low risk as ordinary education or sharing is planned for Shutiao promotion, commercial delivery, traffic boosting, lead acquisition, or product/service promotion.
-High-Risk Signals: "plan to use Shutiao", paid promotion objective, regulated category, missing industry qualification, prohibited promotion category, low-quality marketing, false or exaggerated claim, resource-claim CTA, or content rewritten from neutral tutorial into acquisition funnel.
-Lower-Risk Alternatives: Rerun review when Shutiao is added, remove acquisition CTAs and exaggerated claims, verify prohibited category and qualification rules, keep the note useful and objective, and avoid promoting restricted products or services.
+Trigger Scenarios: A note that may be low risk as ordinary education or sharing is planned for Shutiao promotion, commercial delivery, traffic boosting, product/service promotion, or regulated-category review.
+High-Risk Signals: "plan to use Shutiao", paid promotion objective, regulated category, missing industry qualification, prohibited promotion category, low-quality marketing pattern, false or exaggerated commercial claim, or product/service promotion in a restricted category.
+Lower-Risk Alternatives: Rerun review when Shutiao is added, verify prohibited category and qualification rules, keep the note useful and objective, remove unsupported commercial claims, and review uncertain acquisition CTAs under a directly supported rule instead of scoring them through this context rule.
 Review Questions: Does the planned Shutiao use introduce a paid-promotion review context with category, qualification, or low-quality-marketing restrictions?
-Evidence Extraction: Check promotion plan, note category, product or service involved, qualification materials, title and cover variants, commercial-delivery objective, CTA, landing page, and any regulated-industry signals.
+Evidence Extraction: Check promotion plan, note category, product or service involved, qualification materials, title and cover variants, commercial-delivery objective, landing page, and any regulated-industry signals.
 Official Sources: source.xiaohongshu.shutiao_prohibited_categories, source.xiaohongshu.shutiao_industry_qualification, source.xiaohongshu.pgy_low_quality_governance
 Source Access Date: 2026-06-07
 Status: active

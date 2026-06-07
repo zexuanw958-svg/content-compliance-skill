@@ -43,7 +43,7 @@ If no `Status: active` rule matches, use a low baseline caution score instead of
 ```text
 1: baseline caution, no concern found
 2: baseline caution, minor editorial caution
-3: baseline caution, unresolved topic-gate uncertainty such as missing promotion context, missing regulated-category context, or incomplete distribution assumptions
+3: baseline caution, unresolved topic-gate uncertainty such as missing promotion context, missing regulated-category context, incomplete distribution assumptions, or draft-review uncertainty where only `Status: needs_review` rules are implicated
 ```
 
 Label baseline scores as baseline caution, not confirmed violations or confirmed risks.

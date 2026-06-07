@@ -121,7 +121,7 @@ Status: needs_review
 ```text
 Rule ID: douyin.advertising.qualification_or_industry_restriction
 Platform: Douyin
-Scope: dou_plus, oceanengine_ad_review
+Scope: oceanengine_ad_review
 Rule Name: Advertising qualification or regulated-industry restriction
 Severity: 5
 Trigger Scenarios: Advertising, lead acquisition, landing pages, or promotional materials involve regulated products, services, special qualifications, customer qualifications, or industry-specific access requirements.
