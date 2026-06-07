@@ -10,6 +10,7 @@ The validation gate requires this inventory to include these official domains:
 - `support.oceanengine.com`
 - `pgy.xiaohongshu.com`
 - `e.xiaohongshu.com`
+- `ad.xiaohongshu.com`
 
 | Source ID | Platform | Scope | Official URL | Page Title | Access Date | Page Updated Date | Retrieval Status | Review Status |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
