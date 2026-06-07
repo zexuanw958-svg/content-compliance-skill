@@ -402,6 +402,55 @@ Status: active
         )
         self.assertEqual(source_statuses["source.valid"], "active")
 
+    def test_validator_rejects_research_inventory_status_mismatch(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_root = Path(temp_dir)
+            copied_package = temp_root / "content-compliance"
+            shutil.copytree(PACKAGE, copied_package)
+
+            research_file = (
+                copied_package
+                / "references"
+                / "research"
+                / "douyin-official-sources.md"
+            )
+            original = research_file.read_text(encoding="utf-8")
+            active_status_block = (
+                "## source.oceanengine.ad_management\n\n"
+                "- Official URL: https://support.oceanengine.com/support/content/130539\n"
+                "- Page Title: 巨量引擎-广告投放管理规范\n"
+                "- Access Date: 2026-06-07\n"
+                "- Page Updated Date: 2022-12-08 20:31:19\n"
+                "- Retrieval Status: dynamic_reachable\n"
+                "- Review Status: active"
+            )
+            self.assertIn(active_status_block, original)
+            research_file.write_text(
+                original.replace(
+                    active_status_block,
+                    "## source.oceanengine.ad_management\n\n"
+                    "- Official URL: https://support.oceanengine.com/support/content/130539\n"
+                    "- Page Title: 巨量引擎-广告投放管理规范\n"
+                    "- Access Date: 2026-06-07\n"
+                    "- Page Updated Date: 2022-12-08 20:31:19\n"
+                    "- Retrieval Status: dynamic_reachable\n"
+                    "- Review Status: needs_review",
+                    1,
+                ),
+                encoding="utf-8",
+            )
+
+            result = subprocess.run(
+                [sys.executable, str(copied_package / "scripts" / "validate_skill.py")],
+                cwd=temp_root,
+                text=True,
+                capture_output=True,
+                check=False,
+            )
+            output = result.stdout + result.stderr
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("research source status mismatch", output)
+
     def test_validator_accepts_declared_source_id_token_format(self):
         validator = load_validator_module()
 

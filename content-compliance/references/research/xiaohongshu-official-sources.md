@@ -92,7 +92,7 @@
 - Access Date: 2026-06-07
 - Page Updated Date: 2026-06-05 22:08:27
 - Retrieval Status: dynamic_reachable; official_api_reachable
-- Review Status: needs_review
+- Review Status: active
 - Covered Rule Families:
   - note content standards
   - Pgy commercial note review
@@ -158,7 +158,7 @@
 - Access Date: 2026-06-07
 - Page Updated Date: 2026-06-05 22:14:58
 - Retrieval Status: dynamic_reachable; official_api_reachable
-- Review Status: needs_review
+- Review Status: active
 - Covered Rule Families:
   - external contact
   - off-platform guidance
@@ -178,7 +178,7 @@
 - Access Date: 2026-06-07
 - Page Updated Date: 2026-05-29 17:38:10
 - Retrieval Status: dynamic_reachable; official_api_reachable
-- Review Status: needs_review
+- Review Status: active
 - Covered Rule Families:
   - false marketing
   - low-quality marketing
@@ -198,7 +198,7 @@
 - Access Date: 2026-06-07
 - Page Updated Date: 2026-06-05 22:08:28
 - Retrieval Status: dynamic_reachable; official_api_reachable
-- Review Status: needs_review
+- Review Status: active
 - Covered Rule Families:
   - low-quality marketing rules
   - Pgy cooperation note review
@@ -217,7 +217,7 @@
 - Access Date: 2026-06-07
 - Page Updated Date: 2026-05-29 17:37:40
 - Retrieval Status: dynamic_reachable; official_api_reachable
-- Review Status: needs_review
+- Review Status: active
 - Covered Rule Families:
   - prohibited industries
   - content cooperation bans
@@ -236,7 +236,7 @@
 - Access Date: 2026-06-07
 - Page Updated Date: 2026-06-02 04:12:58
 - Retrieval Status: dynamic_reachable; official_api_reachable
-- Review Status: needs_review
+- Review Status: active
 - Covered Rule Families:
   - regulated industry rules
   - special industry access
@@ -255,7 +255,7 @@
 - Access Date: 2026-06-07
 - Page Updated Date: 2026-05-29 17:34:05
 - Retrieval Status: dynamic_reachable; official_api_reachable
-- Review Status: needs_review
+- Review Status: active
 - Covered Rule Families:
   - industry qualification
   - medical and health knowledge cooperation
@@ -312,7 +312,7 @@
 - Access Date: 2026-06-07
 - Page Updated Date: 2026-03-23
 - Retrieval Status: dynamic_reachable; official_api_reachable
-- Review Status: needs_review
+- Review Status: active
 - Covered Rule Families:
   - Juguang advertising review rules
   - prohibited promotion categories
@@ -333,7 +333,7 @@
 - Access Date: 2026-06-07
 - Page Updated Date: 2025-04-30
 - Retrieval Status: dynamic_reachable
-- Review Status: needs_review
+- Review Status: active
 - Covered Rule Families:
   - Juguang material review
   - commercial disclosure
@@ -375,7 +375,7 @@
 - Access Date: 2026-06-07
 - Page Updated Date: 2025-01-14
 - Retrieval Status: dynamic_reachable
-- Review Status: needs_review
+- Review Status: active
 - Covered Rule Families:
   - Shutiao promotion review
   - prohibited promotion categories
@@ -394,7 +394,7 @@
 - Access Date: 2026-06-07
 - Page Updated Date: 2025-01-14
 - Retrieval Status: dynamic_reachable
-- Review Status: needs_review
+- Review Status: active
 - Covered Rule Families:
   - Shutiao promotion review
   - industry qualification

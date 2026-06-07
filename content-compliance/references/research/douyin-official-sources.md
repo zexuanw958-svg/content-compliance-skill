@@ -134,7 +134,7 @@
 - Access Date: 2026-06-07
 - Page Updated Date: 2026-01-14 19:01:59
 - Retrieval Status: dynamic_reachable
-- Review Status: needs_review
+- Review Status: active
 - Covered Rule Families:
   - account opening rules
   - customer qualification
@@ -155,7 +155,7 @@
 - Access Date: 2026-06-07
 - Page Updated Date: 2022-12-08 20:31:19
 - Retrieval Status: dynamic_reachable
-- Review Status: needs_review
+- Review Status: active
 - Covered Rule Families:
   - ad delivery management
   - advertising review
@@ -198,7 +198,7 @@
 - Access Date: 2026-06-07
 - Page Updated Date: 2026-01-15 16:57:04
 - Retrieval Status: dynamic_reachable
-- Review Status: needs_review
+- Review Status: active
 - Covered Rule Families:
   - external guidance
   - off-platform guidance
@@ -221,7 +221,7 @@
 - Access Date: 2026-06-07
 - Page Updated Date: 2026-01-15 16:28:44
 - Retrieval Status: dynamic_reachable
-- Review Status: needs_review
+- Review Status: active
 - Covered Rule Families:
   - regulated industries
   - financial advertising

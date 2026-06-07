@@ -41,6 +41,11 @@ REQUIRED_FILES = [
     "examples/xiaohongshu-draft-review.md",
 ]
 
+RESEARCH_FILES = [
+    "references/research/douyin-official-sources.md",
+    "references/research/xiaohongshu-official-sources.md",
+]
+
 
 DISCLAIMER = (
     "本报告为 AI 辅助合规参考，依据公开可见的平台规则、整理后的规则卡片以及用户提供的材料生成，"
@@ -160,6 +165,36 @@ def parse_declared_source_ids(sources: str) -> set[str]:
     return set(parse_source_statuses(sources))
 
 
+def parse_research_source_statuses() -> dict[str, tuple[str, str]]:
+    research_statuses = {}
+    invalid_source_ids = []
+    invalid_statuses = {}
+    for research_path in RESEARCH_FILES:
+        current_source_id = None
+        for line_number, line in enumerate(read(research_path).splitlines(), start=1):
+            heading = re.match(r"^## (source\.[A-Za-z0-9_.-]+)\s*$", line)
+            if heading:
+                current_source_id = heading.group(1)
+                if not SOURCE_ID_RE.fullmatch(current_source_id):
+                    invalid_source_ids.append(current_source_id)
+                continue
+
+            status = re.match(r"^- Review Status:\s*(\S+)\s*$", line)
+            if status and current_source_id:
+                status_value = status.group(1)
+                research_statuses[current_source_id] = (
+                    status_value,
+                    f"{research_path}:{line_number}",
+                )
+                if status_value not in ALLOWED_STATUSES:
+                    invalid_statuses[current_source_id] = status_value
+    if invalid_source_ids:
+        fail(f"research logs have invalid source ids: {invalid_source_ids}")
+    if invalid_statuses:
+        fail(f"research logs have invalid Review Status values: {invalid_statuses}")
+    return research_statuses
+
+
 def ensure_sources_inventory() -> dict[str, str]:
     sources = read("references/sources.md")
     missing_domains = [domain for domain in REQUIRED_OFFICIAL_DOMAINS if domain not in sources]
@@ -227,6 +262,22 @@ def ensure_active_rule_card_sources_are_active(source_statuses: dict[str, str]) 
             )
 
 
+def ensure_research_statuses_match_inventory(source_statuses: dict[str, str]) -> None:
+    research_statuses = parse_research_source_statuses()
+    mismatches = []
+    for source_id, (research_status, location) in research_statuses.items():
+        inventory_status = source_statuses.get(source_id)
+        if inventory_status is None:
+            mismatches.append(f"{source_id} missing from inventory at {location}")
+        elif inventory_status != research_status:
+            mismatches.append(
+                f"{source_id}: inventory={inventory_status}, "
+                f"research={research_status} at {location}"
+            )
+    if mismatches:
+        fail(f"research source status mismatch: {mismatches}")
+
+
 def ensure_examples_are_complete() -> None:
     for example_path in [
         "examples/douyin-topic-gate.md",
@@ -263,6 +314,7 @@ def main() -> int:
     ensure_rule_card_sources_are_declared(declared_source_ids)
     ensure_rule_cards_have_valid_statuses()
     ensure_active_rule_card_sources_are_active(source_statuses)
+    ensure_research_statuses_match_inventory(source_statuses)
     ensure_examples_are_complete()
     print("content-compliance skill validation passed")
     return 0
