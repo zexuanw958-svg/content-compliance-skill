@@ -203,6 +203,25 @@ class ContentComplianceSkillTest(unittest.TestCase):
             self.assertIn("content-compliance", content)
             self.assertIn("../SKILL.md", content)
 
+    def test_readmes_document_major_agent_runtimes(self):
+        root_readme = (ROOT / "README.md").read_text(encoding="utf-8")
+        package_readme = read_package_file("README.md")
+        for content in [root_readme, package_readme]:
+            for phrase in [
+                "Codex / Code X",
+                "Claude Code",
+                "OpenClaw",
+                "Harmonies / Hermes Agent",
+            ]:
+                self.assertIn(phrase, content)
+        for phrase in [
+            "~/.agents/skills",
+            "~/.claude/skills",
+            "openclaw skills install ./content-compliance --as content-compliance --global",
+            "~/.hermes/skills",
+        ]:
+            self.assertIn(phrase, root_readme)
+
     def test_scored_example_rules_are_active(self):
         statuses = parse_rule_statuses(["rules/douyin.md", "rules/xiaohongshu.md"])
         failures = []
