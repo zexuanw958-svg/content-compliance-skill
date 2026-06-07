@@ -211,7 +211,7 @@ class ContentComplianceSkillTest(unittest.TestCase):
                 "Codex / Code X",
                 "Claude Code",
                 "OpenClaw",
-                "Harmonies / Hermes Agent",
+                "Hermes Agent",
             ]:
                 self.assertIn(phrase, content)
         for phrase in [

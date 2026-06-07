@@ -1,6 +1,6 @@
 # 内容合规检测 Skill 包
 
-用于抖音 / 小红书内容发布前合规检测的 `SKILL.md` 包。适配 Codex / Code X、Claude Code、OpenClaw、Harmonies / Hermes Agent，以及其他兼容 `SKILL.md` 文件夹格式的智能体运行时。
+用于抖音 / 小红书内容发布前合规检测的 `SKILL.md` 包。适配 Codex / Code X、Claude Code、OpenClaw、Hermes Agent，以及其他兼容 `SKILL.md` 文件夹格式的智能体运行时。
 
 ## 能力
 
@@ -44,7 +44,7 @@ content-compliance
 | Codex / Code X | `~/.agents/skills/content-compliance` 或 `.agents/skills/content-compliance`；部分本地版本也读取 `~/.codex/skills/content-compliance` |
 | Claude Code | `~/.claude/skills/content-compliance` 或 `.claude/skills/content-compliance` |
 | OpenClaw | `openclaw skills install ./content-compliance --as content-compliance --global`，或复制到 `~/.openclaw/skills/content-compliance` |
-| Harmonies / Hermes Agent | 复制到运行时配置的 `SKILL.md` 技能目录；Hermes 兼容环境常见为 `~/.hermes/skills/content-compliance` |
+| Hermes Agent | 复制到运行时配置的 `SKILL.md` 技能目录；Hermes 兼容环境常见为 `~/.hermes/skills/content-compliance` |
 
 更完整的安装命令和示例提示词，请看仓库根目录的 `README.md`。
 

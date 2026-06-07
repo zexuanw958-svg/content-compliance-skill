@@ -1,10 +1,23 @@
 # Content Compliance Skill Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+Status: completed on 2026-06-08.
 
-**Goal:** Build a portable Codex / Claude Code skill that reviews Douyin and Xiaohongshu self-media content against official-source-backed compliance rules.
+This file is now a historical implementation record, not an active task list. The current public package is in `content-compliance/`, with public installation docs in `README.md`, visual scoring in `content-compliance/scoring.md`, slash aliases in `content-compliance/commands/`, and README banner assets in `assets/`.
 
-**Architecture:** The skill is a Markdown-first package under `content-compliance/`. `SKILL.md` routes the user's platform and production phase, platform rule packs store structured rule cards, `scoring.md` defines the 1-10 scoring system, `templates/report.md` defines the required report shape, and `references/` records official source intake. A Python validation script enforces source traceability, disclaimer presence, scoring constants, and example coverage.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [x]`) syntax for tracking.
+
+**Goal:** Build a portable Codex / Code X, Claude Code, OpenClaw, and Hermes Agent skill that reviews Douyin and Xiaohongshu self-media content against official-source-backed compliance rules.
+
+**Architecture:** The skill is a Markdown-first package under `content-compliance/`. `SKILL.md` routes the user's platform and production phase, platform rule packs store structured rule cards, `scoring.md` defines the 1-10 risk score, overall safety score, 10-cell visual bars, and weak-area scoring, `templates/report.md` defines the required report shape, and `references/` records official source intake. A Python validation script enforces source traceability, disclaimer presence, scoring constants, example coverage, command aliases, and README runtime coverage.
+
+## Current Package State
+
+- Runtime compatibility: Codex / Code X, Claude Code, OpenClaw, Hermes Agent, plus other compatible `SKILL.md` folder runtimes.
+- Invocation: Chinese natural triggers, `/检测`, and `/content-compliance`.
+- Public README: Chinese-first, creator-facing, with install instructions for all four target runtimes.
+- Visual assets: `assets/readme-banner.png` for GitHub README display, `assets/readme-banner-source.png` as the source image, and `assets/readme-banner.prompt.md` for regeneration.
+- Validation command: `python3 content-compliance/scripts/validate_skill.py`.
+- Regression command: `python3 -m unittest tests/test_content_compliance_skill.py -v`.
 
 **Tech Stack:** Markdown skill files, Python 3 standard library validation, shell commands, official web research through the web-access workflow when collecting rules.
 
@@ -79,7 +92,7 @@ Responsibilities:
 - Create: `content-compliance/examples/xiaohongshu-draft-review.md`
 - Create: `content-compliance/scripts/validate_skill.py`
 
-- [ ] **Step 1: Write the failing package-structure test**
+- [x] **Step 1: Write the failing package-structure test**
 
 Create `tests/test_content_compliance_skill.py`:
 
@@ -137,7 +150,7 @@ if __name__ == "__main__":
     unittest.main()
 ```
 
-- [ ] **Step 2: Run the test to verify it fails**
+- [x] **Step 2: Run the test to verify it fails**
 
 Run:
 
@@ -147,14 +160,14 @@ python3 -m unittest tests/test_content_compliance_skill.py -v
 
 Expected: FAIL because `content-compliance/` and required files do not exist.
 
-- [ ] **Step 3: Create minimal package files and validator**
+- [x] **Step 3: Create minimal package files and validator**
 
 Create `content-compliance/README.md`:
 
 ```markdown
 # Content Compliance Skill
 
-Portable Codex / Claude Code skill for reviewing self-media topics, scripts, and visual descriptions against official-source-backed Douyin and Xiaohongshu compliance rules.
+Portable Codex / Code X, Claude Code, OpenClaw, and Hermes Agent skill for reviewing self-media topics, scripts, and visual descriptions against official-source-backed Douyin and Xiaohongshu compliance rules.
 ```
 
 Create `content-compliance/SKILL.md`:
@@ -638,7 +651,7 @@ if __name__ == "__main__":
     sys.exit(main())
 ```
 
-- [ ] **Step 4: Run the tests**
+- [x] **Step 4: Run the tests**
 
 Run:
 
@@ -648,7 +661,7 @@ python3 -m unittest tests/test_content_compliance_skill.py -v
 
 Expected: PASS.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 Run:
 
@@ -666,7 +679,7 @@ Expected: commit succeeds.
 - Modify: `content-compliance/scripts/validate_skill.py`
 - Modify: `content-compliance/references/sources.md`
 
-- [ ] **Step 1: Add failing tests for official source IDs**
+- [x] **Step 1: Add failing tests for official source IDs**
 
 Add these imports near the top of `tests/test_content_compliance_skill.py`:
 
@@ -730,7 +743,7 @@ Status: active
             self.assertIn("undeclared sources", output)
 ```
 
-- [ ] **Step 2: Run tests to verify undeclared-source detection is missing**
+- [x] **Step 2: Run tests to verify undeclared-source detection is missing**
 
 Run:
 
@@ -740,7 +753,7 @@ python3 -m unittest tests/test_content_compliance_skill.py -v
 
 Expected: FAIL because the current validator accepts `source.not_declared`.
 
-- [ ] **Step 3: Update validator to check that every rule source ID is declared**
+- [x] **Step 3: Update validator to check that every rule source ID is declared**
 
 Replace `content-compliance/scripts/validate_skill.py` with:
 
@@ -861,7 +874,7 @@ if __name__ == "__main__":
     sys.exit(main())
 ```
 
-- [ ] **Step 4: Run tests**
+- [x] **Step 4: Run tests**
 
 Run:
 
@@ -871,7 +884,7 @@ python3 -m unittest tests/test_content_compliance_skill.py -v
 
 Expected: PASS.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 Run:
 
@@ -888,7 +901,7 @@ Expected: commit succeeds.
 - Modify: `content-compliance/references/sources.md`
 - Modify: `content-compliance/references/research/douyin-official-sources.md`
 
-- [ ] **Step 1: Load web-access requirements**
+- [x] **Step 1: Load web-access requirements**
 
 Run:
 
@@ -898,7 +911,7 @@ sed -n '1,220p' /Users/wzx/.agents/skills/web-access/SKILL.md
 
 Expected: The workflow confirms that official source research must use official pages and that browser CDP is available for dynamic or login-required pages.
 
-- [ ] **Step 2: Check browser access for dynamic pages**
+- [x] **Step 2: Check browser access for dynamic pages**
 
 Run:
 
@@ -908,7 +921,7 @@ CLAUDE_SKILL_DIR=/Users/wzx/.agents/skills/web-access node /Users/wzx/.agents/sk
 
 Expected: exit code `0`, with Node and browser reported as ready.
 
-- [ ] **Step 3: Research official Douyin/OceanEngine rule sources**
+- [x] **Step 3: Research official Douyin/OceanEngine rule sources**
 
 Use official pages only as formal evidence. Start with these known official entries:
 
@@ -949,7 +962,7 @@ external-link or off-platform guidance rules
 regulated industry rules
 ```
 
-- [ ] **Step 4: Update source inventory and research log**
+- [x] **Step 4: Update source inventory and research log**
 
 Update `content-compliance/references/sources.md` by adding one table row per confirmed official source.
 
@@ -977,7 +990,7 @@ Update `content-compliance/references/research/douyin-official-sources.md` with 
 
 Use concrete values from the visited official page. Mark pages that require login or cannot be reached as `login_required` or `blocked`.
 
-- [ ] **Step 5: Run validation**
+- [x] **Step 5: Run validation**
 
 Run:
 
@@ -988,7 +1001,7 @@ python3 -m unittest tests/test_content_compliance_skill.py -v
 
 Expected: both PASS.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 Run:
 
@@ -1006,7 +1019,7 @@ Expected: commit succeeds.
 - Modify: `content-compliance/examples/douyin-topic-gate.md`
 - Modify: `content-compliance/examples/douyin-draft-review.md`
 
-- [ ] **Step 1: Add failing test for active-rule traceability**
+- [x] **Step 1: Add failing test for active-rule traceability**
 
 Add this method inside `ContentComplianceSkillTest`:
 
@@ -1020,7 +1033,7 @@ Add this method inside `ContentComplianceSkillTest`:
                 self.assertIn("Source Access Date:", block)
 ```
 
-- [ ] **Step 2: Run tests**
+- [x] **Step 2: Run tests**
 
 Run:
 
@@ -1030,7 +1043,7 @@ python3 -m unittest tests/test_content_compliance_skill.py -v
 
 Expected: PASS because no active rules are required yet.
 
-- [ ] **Step 3: Replace Douyin starter card with official-source-backed rule cards**
+- [x] **Step 3: Replace Douyin starter card with official-source-backed rule cards**
 
 Edit `content-compliance/rules/douyin.md`. Keep the Rule Card Format section. Replace the starter rule cards with official-source-backed cards covering these families when supported by sources collected in Task 3:
 
@@ -1064,7 +1077,7 @@ Status: active
 
 Only mark a card `active` when the official-source research supports it. Keep unsupported cards as `needs_review` and make the evidence limitation explicit in the card's wording.
 
-- [ ] **Step 4: Add Douyin example reports**
+- [x] **Step 4: Add Douyin example reports**
 
 Create `content-compliance/examples/douyin-topic-gate.md`:
 
@@ -1128,7 +1141,7 @@ Create `content-compliance/examples/douyin-draft-review.md`:
 免责声明：本报告为 AI 辅助合规参考，依据公开可见的平台规则、整理后的规则卡片以及用户提供的材料生成，不代表抖音、巨量引擎、小红书、蒲公英、聚光、薯条或任何相关平台的官方审核意见。本报告不保证内容发布成功、投放审核通过、获得流量推荐、账号安全或完全符合法律法规。平台规则和审核尺度可能随时间、账号状态、内容上下文和执行口径变化。用户应自行核对最新官方规则，并对内容发布、商业推广、广告合规及相关法律责任负责。涉及法律、医疗、金融、教育、未成年人、食品药品等高风险或强监管领域时，请咨询具备资质的专业人士或平台官方渠道。
 ```
 
-- [ ] **Step 5: Run validation and tests**
+- [x] **Step 5: Run validation and tests**
 
 Run:
 
@@ -1139,7 +1152,7 @@ python3 -m unittest tests/test_content_compliance_skill.py -v
 
 Expected: both PASS.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 Run:
 
@@ -1156,7 +1169,7 @@ Expected: commit succeeds.
 - Modify: `content-compliance/references/sources.md`
 - Modify: `content-compliance/references/research/xiaohongshu-official-sources.md`
 
-- [ ] **Step 1: Confirm browser access**
+- [x] **Step 1: Confirm browser access**
 
 Run:
 
@@ -1166,7 +1179,7 @@ CLAUDE_SKILL_DIR=/Users/wzx/.agents/skills/web-access node /Users/wzx/.agents/sk
 
 Expected: exit code `0`, with browser proxy ready.
 
-- [ ] **Step 2: Research official Xiaohongshu sources**
+- [x] **Step 2: Research official Xiaohongshu sources**
 
 Use official pages only as formal evidence. Start with:
 
@@ -1192,7 +1205,7 @@ regulated industry rules
 
 Record each official page using the same structure as Task 3.
 
-- [ ] **Step 3: Update source inventory and research log**
+- [x] **Step 3: Update source inventory and research log**
 
 Update `content-compliance/references/sources.md` with every confirmed official Xiaohongshu-related source.
 
@@ -1218,7 +1231,7 @@ Update `content-compliance/references/research/xiaohongshu-official-sources.md` 
   - xiaohongshu.guidance.external_contact_or_download
 ```
 
-- [ ] **Step 4: Run validation**
+- [x] **Step 4: Run validation**
 
 Run:
 
@@ -1229,7 +1242,7 @@ python3 -m unittest tests/test_content_compliance_skill.py -v
 
 Expected: both PASS.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 Run:
 
@@ -1247,7 +1260,7 @@ Expected: commit succeeds.
 - Modify: `content-compliance/examples/xiaohongshu-topic-gate.md`
 - Modify: `content-compliance/examples/xiaohongshu-draft-review.md`
 
-- [ ] **Step 1: Replace Xiaohongshu starter card with official-source-backed rule cards**
+- [x] **Step 1: Replace Xiaohongshu starter card with official-source-backed rule cards**
 
 Edit `content-compliance/rules/xiaohongshu.md`. Keep the Rule Card Format section. Replace the starter rule cards with official-source-backed cards covering these families when supported by sources collected in Task 5:
 
@@ -1281,7 +1294,7 @@ Status: active
 
 Only mark a card `active` when official-source research supports it.
 
-- [ ] **Step 2: Add Xiaohongshu example reports**
+- [x] **Step 2: Add Xiaohongshu example reports**
 
 Create `content-compliance/examples/xiaohongshu-topic-gate.md`:
 
@@ -1344,7 +1357,7 @@ Create `content-compliance/examples/xiaohongshu-draft-review.md`:
 免责声明：本报告为 AI 辅助合规参考，依据公开可见的平台规则、整理后的规则卡片以及用户提供的材料生成，不代表抖音、巨量引擎、小红书、蒲公英、聚光、薯条或任何相关平台的官方审核意见。本报告不保证内容发布成功、投放审核通过、获得流量推荐、账号安全或完全符合法律法规。平台规则和审核尺度可能随时间、账号状态、内容上下文和执行口径变化。用户应自行核对最新官方规则，并对内容发布、商业推广、广告合规及相关法律责任负责。涉及法律、医疗、金融、教育、未成年人、食品药品等高风险或强监管领域时，请咨询具备资质的专业人士或平台官方渠道。
 ```
 
-- [ ] **Step 3: Run validation and tests**
+- [x] **Step 3: Run validation and tests**
 
 Run:
 
@@ -1355,7 +1368,7 @@ python3 -m unittest tests/test_content_compliance_skill.py -v
 
 Expected: both PASS.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 Run:
 
@@ -1372,7 +1385,7 @@ Expected: commit succeeds.
 - Modify: `content-compliance/SKILL.md`
 - Modify: `tests/test_content_compliance_skill.py`
 
-- [ ] **Step 1: Add tests for workflow instructions**
+- [x] **Step 1: Add tests for workflow instructions**
 
 Add this method inside `ContentComplianceSkillTest`:
 
@@ -1392,7 +1405,7 @@ Add this method inside `ContentComplianceSkillTest`:
         self.assertEqual(missing, [])
 ```
 
-- [ ] **Step 2: Run tests to verify failure**
+- [x] **Step 2: Run tests to verify failure**
 
 Run:
 
@@ -1402,7 +1415,7 @@ python3 -m unittest tests/test_content_compliance_skill.py -v
 
 Expected: FAIL because `SKILL.md` does not yet contain all required workflow phrases.
 
-- [ ] **Step 3: Replace SKILL.md with final workflow**
+- [x] **Step 3: Replace SKILL.md with final workflow**
 
 Replace `content-compliance/SKILL.md` with:
 
@@ -1516,7 +1529,7 @@ For source gaps, say:
 Be practical and direct. Avoid absolute promises such as “必过”, “一定安全”, “绝对违规”, or “平台一定会处罚”.
 ```
 
-- [ ] **Step 4: Run tests**
+- [x] **Step 4: Run tests**
 
 Run:
 
@@ -1526,7 +1539,7 @@ python3 -m unittest tests/test_content_compliance_skill.py -v
 
 Expected: PASS.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 Run:
 
@@ -1544,7 +1557,7 @@ Expected: commit succeeds.
 - Modify: `content-compliance/scripts/validate_skill.py`
 - Modify: `tests/test_content_compliance_skill.py`
 
-- [ ] **Step 1: Add tests for example disclaimers and report sections**
+- [x] **Step 1: Add tests for example disclaimers and report sections**
 
 Add this method inside `ContentComplianceSkillTest`:
 
@@ -1561,7 +1574,7 @@ Add this method inside `ContentComplianceSkillTest`:
             self.assertIn("Risk Score:", content)
 ```
 
-- [ ] **Step 2: Run tests**
+- [x] **Step 2: Run tests**
 
 Run:
 
@@ -1571,7 +1584,7 @@ python3 -m unittest tests/test_content_compliance_skill.py -v
 
 Expected: PASS after examples from Tasks 4 and 6 exist.
 
-- [ ] **Step 3: Add validator checks for report sections and example disclaimers**
+- [x] **Step 3: Add validator checks for report sections and example disclaimers**
 
 Add these functions to `content-compliance/scripts/validate_skill.py` before `main()`:
 
@@ -1619,7 +1632,7 @@ def main() -> int:
     return 0
 ```
 
-- [ ] **Step 4: Run validation and tests**
+- [x] **Step 4: Run validation and tests**
 
 Run:
 
@@ -1630,7 +1643,7 @@ python3 -m unittest tests/test_content_compliance_skill.py -v
 
 Expected: both PASS.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 Run:
 
@@ -1646,14 +1659,14 @@ Expected: commit succeeds.
 **Files:**
 - Modify: `content-compliance/README.md`
 
-- [ ] **Step 1: Update README usage instructions**
+- [x] **Step 1: Update README usage instructions**
 
 Replace `content-compliance/README.md` with:
 
 ```markdown
 # Content Compliance Skill
 
-Portable Codex / Claude Code skill for reviewing self-media topics, scripts, and visual descriptions against official-source-backed Douyin and Xiaohongshu compliance rules.
+Portable Codex / Code X, Claude Code, OpenClaw, and Hermes Agent skill for reviewing self-media topics, scripts, and visual descriptions against official-source-backed Douyin and Xiaohongshu compliance rules.
 
 ## Use Cases
 
@@ -1679,7 +1692,7 @@ python3 -m unittest tests/test_content_compliance_skill.py -v
 ```
 ```
 
-- [ ] **Step 2: Run full validation**
+- [x] **Step 2: Run full validation**
 
 Run:
 
@@ -1697,7 +1710,7 @@ tests pass
 only intentional README change is uncommitted
 ```
 
-- [ ] **Step 3: Commit README**
+- [x] **Step 3: Commit README**
 
 Run:
 
@@ -1708,7 +1721,7 @@ git commit -m "docs: add content compliance skill usage notes"
 
 Expected: commit succeeds.
 
-- [ ] **Step 4: Final clean-status check**
+- [x] **Step 4: Final clean-status check**
 
 Run:
 

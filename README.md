@@ -7,10 +7,10 @@
   <img alt="MIT 许可证" src="https://img.shields.io/badge/License-MIT-0A7D5A">
   <img alt="测试通过" src="https://img.shields.io/badge/%E6%B5%8B%E8%AF%95-25%20%E9%A1%B9%E9%80%9A%E8%BF%87-16A34A">
   <img alt="支持平台" src="https://img.shields.io/badge/%E5%B9%B3%E5%8F%B0-%E6%8A%96%E9%9F%B3%20%7C%20%E5%B0%8F%E7%BA%A2%E4%B9%A6-C13584">
-  <img alt="智能体运行时" src="https://img.shields.io/badge/Agent-Codex%20%7C%20Claude%20Code%20%7C%20OpenClaw%20%7C%20Harmonies-475467">
+  <img alt="智能体运行时" src="https://img.shields.io/badge/Agent-Codex%20%7C%20Claude%20Code%20%7C%20OpenClaw%20%7C%20Hermes%20Agent-475467">
 </p>
 
-面向国内中文自媒体创作者的 `SKILL.md` 合规检测工具。它可以在 **Codex / Code X、Claude Code、OpenClaw、Harmonies / Hermes Agent** 等智能体运行时中使用，用来在发布前检查抖音、小红书内容的选题、口播、画面、评论区话术和投放计划。
+面向国内中文自媒体创作者的 `SKILL.md` 合规检测工具。它可以在 **Codex / Code X、Claude Code、OpenClaw、Hermes Agent** 等智能体运行时中使用，用来在发布前检查抖音、小红书内容的选题、口播、画面、评论区话术和投放计划。
 
 日常唤醒方式：`检测`、`合规检测`、`内容合规检测`、`/检测`、`/content-compliance`。
 
@@ -154,9 +154,9 @@ cp -R content-compliance ~/.openclaw/skills/
 合规检测：按抖音规则检查这段口播稿
 ```
 
-### Harmonies / Hermes Agent
+### Hermes Agent
 
-如果你使用的是 Harmonies、Hermes Agent，或其他兼容 `SKILL.md` 文件夹格式的智能体工具，把同一个 `content-compliance/` 文件夹复制到该运行时配置的 Skill 目录即可。
+如果你使用的是 Hermes Agent，或其他兼容 `SKILL.md` 文件夹格式的智能体工具，把同一个 `content-compliance/` 文件夹复制到该运行时配置的 Skill 目录即可。
 
 常见 Hermes 兼容目录示例：
 
@@ -191,7 +191,7 @@ content-compliance/
 | Codex / Code X | `~/.agents/skills/content-compliance` 或 `.agents/skills/content-compliance` | `/检测`、`/content-compliance`、`检测这个抖音稿子` |
 | Claude Code | `~/.claude/skills/content-compliance` 或 `.claude/skills/content-compliance` | `/检测`、`/content-compliance`、`帮我查一下小红书稿子风险` |
 | OpenClaw | `openclaw skills install ./content-compliance --as content-compliance --global` | `/content-compliance`、`合规检测：按抖音规则检查` |
-| Harmonies / Hermes Agent | 运行时自己的 `SKILL.md` 技能目录，常见为 `~/.hermes/skills/content-compliance` | 取决于客户端；自然语言唤醒稳定可用 |
+| Hermes Agent | 运行时自己的 `SKILL.md` 技能目录，常见为 `~/.hermes/skills/content-compliance` | 取决于客户端；自然语言唤醒稳定可用 |
 
 ## 项目结构
 
