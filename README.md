@@ -1,5 +1,7 @@
 # 内容合规检测 Skill
 
+![内容合规检测 Skill 封面](assets/readme-banner.png)
+
 <p>
   <a href="https://github.com/zexuanw958-svg/content-compliance-skill"><img alt="GitHub 仓库" src="https://img.shields.io/badge/GitHub-content--compliance--skill-24292f?logo=github"></a>
   <img alt="MIT 许可证" src="https://img.shields.io/badge/License-MIT-0A7D5A">
@@ -219,11 +221,7 @@ python3 -m unittest tests/test_content_compliance_skill.py -v
 
 ## 封面图
 
-封面图建议使用 1200 × 360 PNG。生成提示词放在 `assets/readme-banner.prompt.md`；生成后把图片保存为 `assets/readme-banner.png`，再在 README 顶部加入：
-
-```markdown
-![内容合规检测 Skill 封面](assets/readme-banner.png)
-```
+当前封面图是 `assets/readme-banner.png`，原始大图保存在 `assets/readme-banner-source.png`。如果后续需要重新生成，提示词放在 `assets/readme-banner.prompt.md`，建议保持 1200 × 360 的横幅比例。
 
 ## 免责声明
 
