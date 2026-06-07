@@ -222,6 +222,21 @@ class ContentComplianceSkillTest(unittest.TestCase):
         self.assertNotIn("Rule: xiaohongshu.guidance.external_contact_or_download", scored_section)
         self.assertNotIn("Rule: xiaohongshu.promotion.shutiao_review_stricter_context", scored_section)
 
+    def test_xiaohongshu_shutiao_context_alone_is_not_scored_signal(self):
+        rules = read_package_file("rules/xiaohongshu.md")
+        rule_block = re.search(
+            r"Rule ID: xiaohongshu\.promotion\.shutiao_review_stricter_context"
+            r".+?Status: active",
+            rules,
+            flags=re.S,
+        )
+        self.assertIsNotNone(rule_block)
+        block = rule_block.group(0)
+
+        self.assertNotIn('"plan to use Shutiao"', block)
+        self.assertNotIn("paid promotion objective", block)
+        self.assertIn("Planning to use Shutiao alone is context for review", block)
+
     def test_sources_file_contains_required_official_domains(self):
         sources = read_package_file("references/sources.md")
         required_domains = [

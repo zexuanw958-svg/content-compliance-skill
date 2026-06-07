@@ -108,12 +108,12 @@ Evidence Limitation: Official evidence clearly supports Juguang ad identifiabili
 Rule ID: xiaohongshu.promotion.shutiao_review_stricter_context
 Platform: Xiaohongshu
 Scope: shutiao_promotion_review
-Rule Name: Shutiao promotion triggers stricter category, qualification, and marketing-quality review
+Rule Name: Shutiao promotion category, qualification, and marketing-quality review
 Severity: 3
-Trigger Scenarios: A note that may be low risk as ordinary education or sharing is planned for Shutiao promotion, commercial delivery, traffic boosting, product/service promotion, or regulated-category review.
-High-Risk Signals: "plan to use Shutiao", paid promotion objective, regulated category, missing industry qualification, prohibited promotion category, low-quality marketing pattern, false or exaggerated commercial claim, or product/service promotion in a restricted category.
-Lower-Risk Alternatives: Rerun review when Shutiao is added, verify prohibited category and qualification rules, keep the note useful and objective, remove unsupported commercial claims, and review uncertain acquisition CTAs under a directly supported rule instead of scoring them through this context rule.
-Review Questions: Does the planned Shutiao use introduce a paid-promotion review context with category, qualification, or low-quality-marketing restrictions?
+Trigger Scenarios: A note planned for Shutiao promotion involves prohibited or qualification-gated categories, product/service promotion, regulated-category review, low-quality marketing patterns, or false/exaggerated commercial claims.
+High-Risk Signals: regulated category, missing industry qualification, prohibited promotion category, low-quality marketing pattern, false or exaggerated commercial claim, or product/service promotion in a restricted category.
+Lower-Risk Alternatives: Rerun review when Shutiao is added, verify prohibited category and qualification rules, keep the note useful and objective, remove unsupported commercial claims, and review uncertain acquisition CTAs under a directly supported rule instead of scoring them through this context rule. Planning to use Shutiao alone is context for review, not a scored risk signal.
+Review Questions: Does the planned Shutiao use introduce a prohibited category, qualification gap, low-quality-marketing issue, or false/exaggerated commercial claim?
 Evidence Extraction: Check promotion plan, note category, product or service involved, qualification materials, title and cover variants, commercial-delivery objective, landing page, and any regulated-industry signals.
 Official Sources: source.xiaohongshu.shutiao_prohibited_categories, source.xiaohongshu.shutiao_industry_qualification, source.xiaohongshu.pgy_low_quality_governance
 Source Access Date: 2026-06-07
