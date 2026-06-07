@@ -13,6 +13,14 @@ import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
 PACKAGE = ROOT / "content-compliance"
+SCORE_BREAKDOWN_FIELDS = [
+    "severity",
+    "confidence",
+    "exposure",
+    "scenario",
+    "fix_difficulty",
+    "accumulation",
+]
 
 
 REQUIRED_FILES = [
@@ -52,6 +60,20 @@ def parse_rule_statuses(relative_paths: list[str]) -> dict[str, str]:
             if status_match and current_rule:
                 statuses[current_rule] = status_match.group(1)
                 current_rule = None
+    return statuses
+
+
+def parse_source_review_statuses() -> dict[str, str]:
+    statuses = {}
+    for line in read_package_file("references/sources.md").splitlines():
+        stripped = line.strip()
+        if not stripped.startswith("|"):
+            continue
+        cells = [cell.strip() for cell in stripped.strip("|").split("|")]
+        if not cells or cells[0] in {"Source ID", "---"}:
+            continue
+        if re.fullmatch(r"source\.[A-Za-z0-9_.-]+", cells[0]):
+            statuses[cells[0]] = cells[-1]
     return statuses
 
 
@@ -153,6 +175,31 @@ class ContentComplianceSkillTest(unittest.TestCase):
 
         self.assertEqual(failures, [])
 
+    def test_active_rule_sources_are_active_in_inventory(self):
+        source_statuses = parse_source_review_statuses()
+        failures = []
+
+        for relative_path in ["rules/douyin.md", "rules/xiaohongshu.md"]:
+            content = read_package_file(relative_path)
+            cards = re.findall(r"Rule ID: .+?(?=\n```|\nRule ID: |\Z)", content, flags=re.S)
+            for card in cards:
+                rule_id = re.search(r"^Rule ID:\s*(\S+)\s*$", card, flags=re.M).group(1)
+                status = re.search(r"^Status:\s*(\S+)\s*$", card, flags=re.M).group(1)
+                if status != "active":
+                    continue
+
+                official_sources = re.search(
+                    r"^Official Sources:\s*([^\n]*)$", card, flags=re.M
+                ).group(1)
+                for source_id in [source.strip() for source in official_sources.split(",")]:
+                    if source_statuses.get(source_id) != "active":
+                        failures.append(
+                            f"{rule_id}: {source_id} is "
+                            f"{source_statuses.get(source_id, 'missing')}"
+                        )
+
+        self.assertEqual(failures, [])
+
     def test_sources_file_contains_required_official_domains(self):
         sources = read_package_file("references/sources.md")
         required_domains = [
@@ -192,6 +239,18 @@ class ContentComplianceSkillTest(unittest.TestCase):
             content = read_package_file(relative_path)
             self.assertIn("免责声明：本报告为 AI 辅助合规参考", content)
             self.assertIn("Risk Score:", content)
+
+    def test_examples_include_score_breakdown_fields(self):
+        for relative_path in [
+            "examples/douyin-topic-gate.md",
+            "examples/douyin-draft-review.md",
+            "examples/xiaohongshu-topic-gate.md",
+            "examples/xiaohongshu-draft-review.md",
+        ]:
+            content = read_package_file(relative_path)
+            self.assertIn("Score Breakdown:", content)
+            for field in SCORE_BREAKDOWN_FIELDS:
+                self.assertIn(f"- {field}:", content)
 
     def test_active_rules_include_traceability_without_evidence_limitations(self):
         for relative_path in ["rules/douyin.md", "rules/xiaohongshu.md"]:
@@ -289,6 +348,59 @@ Status: active
             output = result.stdout + result.stderr
             self.assertNotEqual(result.returncode, 0)
             self.assertIn("undeclared sources", output)
+
+    def test_validator_rejects_active_rule_with_non_active_source(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_root = Path(temp_dir)
+            copied_package = temp_root / "content-compliance"
+            shutil.copytree(PACKAGE, copied_package)
+
+            rule_file = copied_package / "rules" / "douyin.md"
+            original = rule_file.read_text(encoding="utf-8")
+            rule_file.write_text(
+                original
+                + """
+
+Rule ID: douyin.test.non_active_source
+Platform: Douyin
+Scope: ordinary_post
+Rule Name: Test non-active source
+Severity: 1
+Trigger Scenarios: test only
+High-Risk Signals: test only
+Lower-Risk Alternatives: test only
+Review Questions: test only
+Evidence Extraction: test only
+Official Sources: source.douyin.safety_center
+Source Access Date: 2026-06-07
+Status: active
+""",
+                encoding="utf-8",
+            )
+
+            result = subprocess.run(
+                [sys.executable, str(copied_package / "scripts" / "validate_skill.py")],
+                cwd=temp_root,
+                text=True,
+                capture_output=True,
+                check=False,
+            )
+            output = result.stdout + result.stderr
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("non-active sources", output)
+
+    def test_validator_reads_source_status_from_last_table_cell(self):
+        validator = load_validator_module()
+        source_statuses = validator.parse_source_statuses(
+            textwrap.dedent(
+                """\
+                | Source ID | Platform | Scope | Official URL | Page Title | Access Date | Page Updated Date | Retrieval Status | Review Status |
+                | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+                | source.valid | Xiaohongshu | commercial_site | https://example.com | 商业产品 \\| 小红书商业化官网 | 2026-06-07 | not visible | dynamic_reachable | active |
+                """
+            )
+        )
+        self.assertEqual(source_statuses["source.valid"], "active")
 
     def test_validator_accepts_declared_source_id_token_format(self):
         validator = load_validator_module()

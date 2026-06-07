@@ -17,6 +17,13 @@
 - Phase: draft_review
 - Recommendation: 修改后再投放；如计划巨量引擎广告，不建议保留“评论区拿链接”和直接下载引导。
 - Risk Score: 7/10
+- Score Breakdown:
+  - severity: 4, based on the strongest active OceanEngine ad-review guidance risk.
+  - confidence: 1.0, because the draft explicitly says it will use OceanEngine ads and includes download/link-acquisition wording.
+  - exposure: 1.2, because this is pre-publication ad material with planned paid delivery.
+  - scenario: 1.2, because the risk is in a confirmed ad-review context.
+  - fix_difficulty: 1.5, because title, 口播, 字幕, and visual landing-page frames all need coordinated revision.
+  - accumulation: +0.75 for one additional distinct severity-4 active acquisition-path risk; no needs_review rule is scored.
 - Matched Risks:
   - Rule: douyin.guidance.external_download
   - Evidence: 计划巨量引擎广告投放，口播“下载两个开源项目”，画面展示第三方下载落地页和下载按钮。

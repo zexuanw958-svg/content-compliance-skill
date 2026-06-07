@@ -1,5 +1,9 @@
 # Risk Scoring
 
+Only confirmed risks matched by `Status: active` rule cards are item-score inputs.
+
+`Status: needs_review` matches are pending-review notes. They do not enter item score, accumulation, or final score unless the same evidence independently matches a `Status: active` rule.
+
 Each risk item receives an item score:
 
 ```text
@@ -32,6 +36,18 @@ severity 5: +1.0 each
 accumulation cap: 2
 ```
 
+Do not double-count the same evidence across overlapping active rules. If one phrase, frame, CTA, landing-page flow, or qualification gap triggers several closely related active rules, score the strongest matching item and use the overlap only in the rationale unless there is distinct evidence for another item.
+
+If no `Status: active` rule matches, use a low baseline caution score instead of a confirmed-risk score:
+
+```text
+1: baseline caution, no concern found
+2: baseline caution, minor editorial caution
+3: baseline caution, unresolved topic-gate uncertainty such as missing promotion context, missing regulated-category context, or incomplete distribution assumptions
+```
+
+Label baseline scores as baseline caution, not confirmed violations or confirmed risks.
+
 Score bands:
 
 ```text
@@ -42,4 +58,4 @@ Score bands:
 9-10: very high risk, reframe or rewrite
 ```
 
-Reports must explain the score. Do not output only a number.
+Reports must explain the score. Do not output only a number. Include the factors `severity`, `confidence`, `exposure`, `scenario`, `fix_difficulty`, and `accumulation`, and make clear when pending-review notes were excluded from scoring.

@@ -14,7 +14,14 @@
 - Platform: Xiaohongshu
 - Phase: draft_review
 - Recommendation: 修改后再发布；如计划薯条，应移除评论区领取和私信资源交付表达。
-- Risk Score: 7/10
+- Risk Score: 6/10
+- Score Breakdown:
+  - severity: 3, from the single scored active Shutiao stricter-review context rule.
+  - confidence: 1.0, because the draft explicitly plans Shutiao promotion and includes resource-claim CTA wording.
+  - exposure: 1.5, because the note is planned for paid promotion rather than ordinary posting only.
+  - scenario: 1.4, because the issue appears in a confirmed promotion-review scenario.
+  - fix_difficulty: 1.5, because the title, body, and cover CTA all need coordinated edits.
+  - accumulation: 0; the matched guidance/download rule is `needs_review` and remains a pending-review note, so it is not scored.
 - Matched Risk:
   - Rule: xiaohongshu.promotion.shutiao_review_stricter_context
   - Evidence: 明确计划投放薯条，且标题“资料包直接拿”、正文“评论区回复关键词”、首图“评论区领链接”形成资源领取 CTA，进入付费推广审核时会触发更严格的营销质量复核。

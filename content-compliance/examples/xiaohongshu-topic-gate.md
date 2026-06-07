@@ -12,7 +12,14 @@
 - Platform: Xiaohongshu
 - Phase: topic_gate
 - Recommendation: 可以继续做，但标题和封面应避免夸大、神化工具效果或设计成资料领取入口。
-- Risk Score: 3/10
+- Risk Score: 2/10
+- Score Breakdown:
+  - severity: none; no confirmed `Status: active` rule match at topic stage.
+  - confidence: no confirmed risk evidence; this is baseline caution.
+  - exposure: ordinary topic planning only, with no promotion plan.
+  - scenario: minor editorial caution for possible future exaggerated-productivity or resource-claim framing, not a confirmed violation.
+  - fix_difficulty: low; keep the topic educational and avoid acquisition-style title or cover text.
+  - accumulation: 0; no active matched risks and no pending-review notes are scored.
 - Required Checks:
   - The topic is technical education.
   - Avoid off-platform acquisition, private-message resource delivery, and exaggerated productivity claims.

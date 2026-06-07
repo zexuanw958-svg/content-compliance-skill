@@ -14,7 +14,14 @@
 - Platform: Douyin
 - Phase: topic_gate
 - Recommendation: 可继续做，但避免把内容包装成绕过限制、获取资源、领取链接或站外下载教程。
-- Risk Score: 3/10
+- Risk Score: 2/10
+- Score Breakdown:
+  - severity: none; no confirmed `Status: active` rule match at topic stage.
+  - confidence: no confirmed risk evidence; this is baseline caution.
+  - exposure: ordinary topic planning only, with no promotion plan.
+  - scenario: minor editorial caution for possible future off-platform acquisition framing, not a confirmed violation.
+  - fix_difficulty: low; keep the angle educational and avoid resource-claim CTA wording.
+  - accumulation: 0; no active matched risks and no pending-review notes are scored.
 - Required Checks:
   - The topic itself is technical education.
   - Title and angle must avoid off-platform acquisition guidance.

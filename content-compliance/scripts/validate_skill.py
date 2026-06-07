@@ -14,6 +14,14 @@ REQUIRED_OFFICIAL_DOMAINS = [
     "e.xiaohongshu.com",
     "ad.xiaohongshu.com",
 ]
+REQUIRED_SCORE_BREAKDOWN_FACTORS = [
+    "severity",
+    "confidence",
+    "exposure",
+    "scenario",
+    "fix_difficulty",
+    "accumulation",
+]
 
 
 REQUIRED_FILES = [
@@ -76,6 +84,15 @@ def ensure_report_sections() -> None:
         fail(f"report template sections missing: {missing}")
 
 
+def ensure_report_score_breakdown() -> None:
+    report = read("templates/report.md")
+    missing = [
+        factor for factor in REQUIRED_SCORE_BREAKDOWN_FACTORS if f"- {factor}:" not in report
+    ]
+    if "Score Breakdown:" not in report or missing:
+        fail(f"report template score breakdown missing fields: {missing}")
+
+
 def ensure_scoring_constants() -> None:
     scoring = read("scoring.md")
     required = ["15.75", "severity 3: +0.5", "severity 4: +0.75", "accumulation cap: 2"]
@@ -111,38 +128,51 @@ def extract_rule_source_ids(rule_path: str, card: str) -> list[str]:
     return source_ids
 
 
-def parse_declared_source_ids(sources: str) -> set[str]:
-    source_ids = set()
+def parse_source_statuses(sources: str) -> dict[str, str]:
+    source_statuses = {}
     invalid_source_ids = []
+    invalid_statuses = {}
     for line in sources.splitlines():
         stripped = line.strip()
         if not stripped.startswith("|"):
             continue
+        # Source titles may contain escaped pipes, so only the first and last
+        # cells are semantically important for source ID and Review Status.
         cells = [cell.strip() for cell in stripped.strip("|").split("|")]
         if not cells or cells[0] in {"Source ID", "---"}:
             continue
         source_id = cells[0]
+        review_status = cells[-1]
         if SOURCE_ID_RE.fullmatch(source_id):
-            source_ids.add(source_id)
+            source_statuses[source_id] = review_status
+            if review_status not in ALLOWED_STATUSES:
+                invalid_statuses[source_id] = review_status
         elif source_id.startswith("source."):
             invalid_source_ids.append(source_id)
     if invalid_source_ids:
         fail(f"sources inventory has invalid source ids: {invalid_source_ids}")
-    return source_ids
+    if invalid_statuses:
+        fail(f"sources inventory has invalid Review Status values: {invalid_statuses}")
+    return source_statuses
 
 
-def ensure_sources_inventory() -> set[str]:
+def parse_declared_source_ids(sources: str) -> set[str]:
+    return set(parse_source_statuses(sources))
+
+
+def ensure_sources_inventory() -> dict[str, str]:
     sources = read("references/sources.md")
     missing_domains = [domain for domain in REQUIRED_OFFICIAL_DOMAINS if domain not in sources]
     if missing_domains:
         fail(f"sources inventory missing required official domains: {missing_domains}")
-    declared_source_ids = parse_declared_source_ids(sources)
+    source_statuses = parse_source_statuses(sources)
+    declared_source_ids = set(source_statuses)
     if len(declared_source_ids) < MIN_DECLARED_SOURCE_IDS:
         fail(
             "sources inventory has too few declared source ids: "
             f"{len(declared_source_ids)} found, expected at least {MIN_DECLARED_SOURCE_IDS}"
         )
-    return declared_source_ids
+    return source_statuses
 
 
 def ensure_rule_cards_have_source_ids() -> None:
@@ -163,16 +193,37 @@ def ensure_rule_card_sources_are_declared(declared_source_ids: set[str]) -> None
             )
 
 
+def extract_rule_status(rule_path: str, card: str) -> str:
+    status = re.search(r"^Status:[ \t]*([^\n]*)$", card, flags=re.M)
+    if not status:
+        fail(f"rule card missing Status in {rule_path}: {card[:120]}")
+    status_value = status.group(1).strip()
+    if status_value not in ALLOWED_STATUSES:
+        fail(
+            f"rule card has invalid Status in {rule_path}: "
+            f"{status_value!r}; expected one of {sorted(ALLOWED_STATUSES)}"
+        )
+    return status_value
+
+
 def ensure_rule_cards_have_valid_statuses() -> None:
     for rule_path, card in iter_rule_cards():
-        status = re.search(r"^Status:[ \t]*([^\n]*)$", card, flags=re.M)
-        if not status:
-            fail(f"rule card missing Status in {rule_path}: {card[:120]}")
-        status_value = status.group(1).strip()
-        if status_value not in ALLOWED_STATUSES:
+        extract_rule_status(rule_path, card)
+
+
+def ensure_active_rule_card_sources_are_active(source_statuses: dict[str, str]) -> None:
+    for rule_path, card in iter_rule_cards():
+        if extract_rule_status(rule_path, card) != "active":
+            continue
+        inactive_source_ids = [
+            f"{source_id} ({source_statuses.get(source_id, 'missing')})"
+            for source_id in extract_rule_source_ids(rule_path, card)
+            if source_statuses.get(source_id) != "active"
+        ]
+        if inactive_source_ids:
             fail(
-                f"rule card has invalid Status in {rule_path}: "
-                f"{status_value!r}; expected one of {sorted(ALLOWED_STATUSES)}"
+                f"active rule card cites non-active sources in {rule_path}: "
+                f"{inactive_source_ids}"
             )
 
 
@@ -188,17 +239,30 @@ def ensure_examples_are_complete() -> None:
             fail(f"example missing disclaimer: {example_path}")
         if "Risk Score:" not in content:
             fail(f"example missing risk score: {example_path}")
+        missing_score_breakdown_factors = [
+            factor
+            for factor in REQUIRED_SCORE_BREAKDOWN_FACTORS
+            if f"- {factor}:" not in content
+        ]
+        if "Score Breakdown:" not in content or missing_score_breakdown_factors:
+            fail(
+                f"example score breakdown missing fields in {example_path}: "
+                f"{missing_score_breakdown_factors}"
+            )
 
 
 def main() -> int:
     ensure_required_files()
     ensure_disclaimer()
     ensure_report_sections()
+    ensure_report_score_breakdown()
     ensure_scoring_constants()
-    declared_source_ids = ensure_sources_inventory()
+    source_statuses = ensure_sources_inventory()
+    declared_source_ids = set(source_statuses)
     ensure_rule_cards_have_source_ids()
     ensure_rule_card_sources_are_declared(declared_source_ids)
     ensure_rule_cards_have_valid_statuses()
+    ensure_active_rule_card_sources_are_active(source_statuses)
     ensure_examples_are_complete()
     print("content-compliance skill validation passed")
     return 0

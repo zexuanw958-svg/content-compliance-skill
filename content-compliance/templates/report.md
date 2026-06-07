@@ -13,6 +13,14 @@
 - Recommendation:
 - Total Risk Score:
 - One-Sentence Rationale:
+- Score Breakdown:
+  - severity:
+  - confidence:
+  - exposure:
+  - scenario:
+  - fix_difficulty:
+  - accumulation:
+  - Pending-review notes are not scored unless the same evidence independently matches a `Status: active` rule.
 
 ## 3. Risk List
 
