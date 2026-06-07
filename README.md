@@ -53,6 +53,10 @@ python3 content-compliance/scripts/validate_skill.py
 python3 -m unittest tests/test_content_compliance_skill.py -v
 ```
 
+Validation note:
+
+This repository intentionally keeps `content-compliance/README.md` inside the skill package because the package is meant for public distribution and standalone inspection. Some generic skill-creator validators prefer no `README.md` inside a skill folder and may warn about this. For this project, use the bundled validator and test suite above as the source of truth.
+
 ## Disclaimer
 
 This skill is a compliance reference tool, not an official review tool. It does not guarantee publishing approval, ad review approval, traffic delivery, account safety, or legal compliance.

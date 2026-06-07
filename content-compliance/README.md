@@ -57,3 +57,7 @@ Run:
 python3 content-compliance/scripts/validate_skill.py
 python3 -m unittest tests/test_content_compliance_skill.py -v
 ```
+
+Validation note:
+
+This `README.md` is intentionally kept inside the skill package for public distribution and standalone review. Some generic skill-creator validators prefer no `README.md` inside a skill folder and may warn about this. For this project, use the bundled validator and test suite above as the source of truth.
