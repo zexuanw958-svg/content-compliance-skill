@@ -2,18 +2,23 @@
 
 ## Input
 
-Platform: Xiaohongshu
-Phase: Draft Review
-Title: Domestic model to Codex, resource pack ready
-Copy: Reply in comments and I will send you the project links.
-Visual Description: First image says "comment to get the links"; second image shows a download page.
-Promotion Plan: Shutiao
+平台：小红书
+阶段：成稿
+标题：国产模型接入 Codex，资料包直接拿
+正文：评论区回复关键词，我把项目链接发给你。
+画面描述：首图写“评论区领链接”，第二张展示下载页面。
+是否计划投放：薯条
 
 ## Expected Review Shape
 
-- Recommendation: Revise before publishing or promotion.
+- Platform: Xiaohongshu
+- Phase: draft_review
+- Recommendation: 修改后再发布；如计划薯条，应移除评论区领取和私信资源交付表达。
 - Risk Score: 7/10
-- Main Check: Remove comment-based resource claiming and private acquisition framing.
+- Matched Risk:
+  - Rule: xiaohongshu.guidance.external_contact_or_download
+  - Evidence: 标题“资料包直接拿”、正文“评论区回复关键词”、首图“评论区领链接”。
+  - Safer Revision: 改为介绍项目名称、适用场景和安全校验方法，不把评论区或私信作为资源获取路径。
 
 ## Disclaimer
 

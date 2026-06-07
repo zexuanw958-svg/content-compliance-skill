@@ -2,16 +2,20 @@
 
 ## Input
 
-Platform: Xiaohongshu
-Phase: Topic Gate
-Topic: How to connect a domestic model to Codex
-Promotion Plan: none
+平台：小红书
+阶段：选题
+选题：如何把国产模型接入 Codex
+是否计划投放：否
 
 ## Expected Review Shape
 
-- Recommendation: Continue with a practical tutorial angle, avoiding resource-claiming or exaggerated productivity promises.
+- Platform: Xiaohongshu
+- Phase: topic_gate
+- Recommendation: 可以继续做，但标题和封面应避免夸大、神化工具效果或设计成资料领取入口。
 - Risk Score: 3/10
-- Main Check: The topic is acceptable as technical education if it does not become a private-message resource delivery path.
+- Required Checks:
+  - The topic is technical education.
+  - Avoid off-platform acquisition, private-message resource delivery, and exaggerated productivity claims.
 
 ## Disclaimer
 
