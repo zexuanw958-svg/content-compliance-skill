@@ -2,16 +2,23 @@
 
 ## Input
 
-Platform: Douyin
-Phase: Topic Gate
-Topic: How to connect a domestic model to Codex
-Promotion Plan: none
+```text
+平台：抖音
+阶段：选题
+选题：如何把国产模型接入 Codex
+是否计划投放：否
+```
 
 ## Expected Review Shape
 
-- Recommendation: Continue with a technical education angle, avoiding off-platform acquisition framing.
+- Platform: Douyin
+- Phase: topic_gate
+- Recommendation: 可继续做，但避免把内容包装成绕过限制、获取资源、领取链接或站外下载教程。
 - Risk Score: 3/10
-- Main Check: The topic is acceptable as technical education, but title and calls-to-action must avoid link claiming, private-message delivery, or download guidance.
+- Required Checks:
+  - The topic itself is technical education.
+  - Title and angle must avoid off-platform acquisition guidance.
+  - If promotion is planned later, rerun Draft Review with the actual promotion or ad-delivery context.
 
 ## Disclaimer
 

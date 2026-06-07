@@ -2,18 +2,28 @@
 
 ## Input
 
-Platform: Douyin
-Phase: Draft Review
-Title: Domestic model to Codex, beginner tutorial
-Script: I will show you how to download two open-source projects. Get the links in the comments.
-Visual Description: Show a project page, a download button, terminal installation, and subtitle text saying "get the link in comments".
-Promotion Plan: DOU+
+```text
+平台：抖音
+阶段：成稿
+标题：国产模型接入 Codex，保姆级教程
+口播稿：我会教你下载两个开源项目，评论区拿链接。
+画面描述：展示第三方下载落地页、下载按钮、字幕提示“评论区拿链接”。
+是否计划投放：巨量引擎广告
+```
 
 ## Expected Review Shape
 
-- Recommendation: Revise before publishing or promotion.
+- Platform: Douyin
+- Phase: draft_review
+- Recommendation: 修改后再投放；如计划巨量引擎广告，不建议保留“评论区拿链接”和直接下载引导。
 - Risk Score: 7/10
-- Main Check: The comment-link and download guidance should be removed or reframed into neutral project-name discussion.
+- Matched Risks:
+  - Rule: douyin.guidance.external_download
+  - Evidence: 计划巨量引擎广告投放，口播“下载两个开源项目”，画面展示第三方下载落地页和下载按钮。
+  - Safer Revision: 保持广告素材与落地页一致，避免把第三方下载路径作为主要行动引导。
+  - Rule: douyin.guidance.comment_or_private_message_acquisition
+  - Evidence: 字幕提示“评论区拿链接”。
+  - Safer Revision: 不把评论区、私信、客服或个人账号作为获取链接、资料或权益的行动路径。
 
 ## Disclaimer
 

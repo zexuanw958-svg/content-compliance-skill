@@ -101,6 +101,15 @@ class ContentComplianceSkillTest(unittest.TestCase):
         missing = [domain for domain in required_domains if domain not in sources]
         self.assertEqual(missing, [])
 
+    def test_active_rules_include_traceability_without_evidence_limitations(self):
+        for relative_path in ["rules/douyin.md", "rules/xiaohongshu.md"]:
+            content = read_package_file(relative_path)
+            active_blocks = [block for block in content.split("Rule ID: ")[1:] if "Status: active" in block]
+            for block in active_blocks:
+                self.assertIn("Official Sources: source.", block)
+                self.assertIn("Source Access Date:", block)
+                self.assertNotIn("Evidence limitation:", block)
+
     def test_validator_requires_source_id_in_official_sources_field(self):
         validator = load_validator_module()
 
