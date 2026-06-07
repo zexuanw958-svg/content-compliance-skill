@@ -46,6 +46,8 @@ RESEARCH_FILES = [
     "references/research/xiaohongshu-official-sources.md",
 ]
 
+PENDING_REVIEW_BOUNDARIES = {"- Pending Review Notes:", "- 待复核提示:"}
+
 
 DISCLAIMER = (
     "本报告为 AI 辅助合规参考，依据公开可见的平台规则、整理后的规则卡片以及用户提供的材料生成，"
@@ -278,7 +280,30 @@ def ensure_research_statuses_match_inventory(source_statuses: dict[str, str]) ->
         fail(f"research source status mismatch: {mismatches}")
 
 
-def ensure_examples_are_complete() -> None:
+def iter_scored_example_rule_blocks(content: str):
+    current_rule_id = None
+    current_block = []
+    for line in content.splitlines():
+        stripped = line.strip()
+        if stripped in PENDING_REVIEW_BOUNDARIES:
+            break
+
+        rule = re.match(r"\s*-\s*Rule:\s*([A-Za-z0-9_.-]+)\s*$", line)
+        if rule:
+            if current_rule_id:
+                yield current_rule_id, "\n".join(current_block)
+            current_rule_id = rule.group(1)
+            current_block = [line]
+            continue
+
+        if current_rule_id:
+            current_block.append(line)
+
+    if current_rule_id:
+        yield current_rule_id, "\n".join(current_block)
+
+
+def ensure_examples_are_complete(declared_source_ids: set[str]) -> None:
     for example_path in [
         "examples/douyin-topic-gate.md",
         "examples/douyin-draft-review.md",
@@ -300,6 +325,31 @@ def ensure_examples_are_complete() -> None:
                 f"example score breakdown missing fields in {example_path}: "
                 f"{missing_score_breakdown_factors}"
             )
+        for rule_id, rule_block in iter_scored_example_rule_blocks(content):
+            official_source = re.search(
+                r"^\s*-\s*Official Source:\s*([^\n]*)$",
+                rule_block,
+                flags=re.M,
+            )
+            if not official_source:
+                fail(f"example scored rule missing official source: {example_path} {rule_id}")
+            source_ids = [source_id.strip() for source_id in official_source.group(1).split(",")]
+            invalid_source_ids = [
+                source_id for source_id in source_ids if not SOURCE_ID_RE.fullmatch(source_id)
+            ]
+            undeclared_source_ids = [
+                source_id for source_id in source_ids if source_id not in declared_source_ids
+            ]
+            if invalid_source_ids:
+                fail(
+                    f"example scored rule has invalid official sources: "
+                    f"{example_path} {rule_id} {invalid_source_ids}"
+                )
+            if undeclared_source_ids:
+                fail(
+                    f"example scored rule has undeclared official sources: "
+                    f"{example_path} {rule_id} {undeclared_source_ids}"
+                )
 
 
 def main() -> int:
@@ -315,7 +365,7 @@ def main() -> int:
     ensure_rule_cards_have_valid_statuses()
     ensure_active_rule_card_sources_are_active(source_statuses)
     ensure_research_statuses_match_inventory(source_statuses)
-    ensure_examples_are_complete()
+    ensure_examples_are_complete(declared_source_ids)
     print("content-compliance skill validation passed")
     return 0
 

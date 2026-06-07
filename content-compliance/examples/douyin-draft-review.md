@@ -26,9 +26,11 @@
   - accumulation: +0.75 for one additional distinct severity-4 active acquisition-path risk; no needs_review rule is scored.
 - Matched Risks:
   - Rule: douyin.guidance.external_download
+  - Official Source: source.oceanengine.ad_management, source.oceanengine.app_miniprogram_business_norm
   - Evidence: 计划巨量引擎广告投放，口播“下载两个开源项目”，画面展示第三方下载落地页和下载按钮。
   - Safer Revision: 保持广告素材与落地页一致，避免把第三方下载路径作为主要行动引导。
   - Rule: douyin.guidance.comment_or_private_message_acquisition
+  - Official Source: source.oceanengine.ad_management
   - Evidence: 字幕提示“评论区拿链接”。
   - Safer Revision: 不把评论区、私信、客服或个人账号作为获取链接、资料或权益的行动路径。
 

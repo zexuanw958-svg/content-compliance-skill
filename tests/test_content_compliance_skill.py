@@ -91,6 +91,32 @@ def scored_rules_in_example(relative_path: Path) -> list[str]:
     return rules
 
 
+def scored_rule_blocks_in_example(relative_path: Path) -> list[tuple[str, str]]:
+    blocks = []
+    pending_review_boundaries = ("- Pending Review Notes:", "- 待复核提示:")
+    current_rule = None
+    current_block = []
+    for line in relative_path.read_text(encoding="utf-8").splitlines():
+        stripped_line = line.strip()
+        if stripped_line in pending_review_boundaries:
+            break
+
+        rule_match = re.match(r"\s*-\s*Rule:\s*([A-Za-z0-9_.-]+)\s*$", line)
+        if rule_match:
+            if current_rule:
+                blocks.append((current_rule, "\n".join(current_block)))
+            current_rule = rule_match.group(1)
+            current_block = [line]
+            continue
+
+        if current_rule:
+            current_block.append(line)
+
+    if current_rule:
+        blocks.append((current_rule, "\n".join(current_block)))
+    return blocks
+
+
 def load_validator_module():
     validator_path = PACKAGE / "scripts/validate_skill.py"
     spec = importlib.util.spec_from_file_location("validate_skill", validator_path)
@@ -172,6 +198,16 @@ class ContentComplianceSkillTest(unittest.TestCase):
                 status = statuses.get(rule_id)
                 if status != "active":
                     failures.append(f"{example_path.name}: {rule_id} is {status or 'missing'}")
+
+        self.assertEqual(failures, [])
+
+    def test_scored_example_rules_include_official_sources(self):
+        failures = []
+        for example_path in (PACKAGE / "examples").glob("*.md"):
+            for rule_id, block in scored_rule_blocks_in_example(example_path):
+                if re.search(r"^\s*-\s*Official Source:\s*source\.", block, flags=re.M):
+                    continue
+                failures.append(f"{example_path.name}: {rule_id}")
 
         self.assertEqual(failures, [])
 
@@ -496,6 +532,35 @@ Status: active
             output = result.stdout + result.stderr
             self.assertNotEqual(result.returncode, 0)
             self.assertIn("research source status mismatch", output)
+
+    def test_validator_rejects_scored_example_rule_without_official_source(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_root = Path(temp_dir)
+            copied_package = temp_root / "content-compliance"
+            shutil.copytree(PACKAGE, copied_package)
+
+            example_file = copied_package / "examples" / "douyin-draft-review.md"
+            original = example_file.read_text(encoding="utf-8")
+            official_source_line = (
+                "  - Official Source: source.oceanengine.ad_management, "
+                "source.oceanengine.app_miniprogram_business_norm\n"
+            )
+            self.assertIn(official_source_line, original)
+            example_file.write_text(
+                original.replace(official_source_line, "", 1),
+                encoding="utf-8",
+            )
+
+            result = subprocess.run(
+                [sys.executable, str(copied_package / "scripts" / "validate_skill.py")],
+                cwd=temp_root,
+                text=True,
+                capture_output=True,
+                check=False,
+            )
+            output = result.stdout + result.stderr
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("example scored rule missing official source", output)
 
     def test_validator_accepts_declared_source_id_token_format(self):
         validator = load_validator_module()
