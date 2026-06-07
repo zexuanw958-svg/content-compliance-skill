@@ -235,7 +235,16 @@ class ContentComplianceSkillTest(unittest.TestCase):
 
         self.assertNotIn('"plan to use Shutiao"', block)
         self.assertNotIn("paid promotion objective", block)
+        self.assertNotIn("product/service promotion,", block)
+        self.assertNotIn("commercial-delivery objective", block)
         self.assertIn("Planning to use Shutiao alone is context for review", block)
+        for required_signal in [
+            "prohibited category",
+            "qualification gap",
+            "low-quality-marketing issue",
+            "false/exaggerated commercial claim",
+        ]:
+            self.assertIn(required_signal, block)
 
     def test_sources_file_contains_required_official_domains(self):
         sources = read_package_file("references/sources.md")
