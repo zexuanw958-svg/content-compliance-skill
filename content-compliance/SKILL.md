@@ -1,6 +1,6 @@
 ---
 name: content-compliance
-description: Review Douyin and Xiaohongshu self-media topics, scripts, and visual descriptions using official-source-backed platform rule cards, a 1-10 risk score, rewrite suggestions, and a mandatory disclaimer. Use when the user says 检测, 合规检测, 内容合规, 审一下抖音/小红书选题, 查一下稿子风险, or asks whether a topic/script/visual plan can be posted or promoted.
+description: Review Douyin and Xiaohongshu self-media topics, scripts, and visual descriptions using official-source-backed platform rule cards, a 1-10 risk score, visual safety bars, weak-area scores, rewrite suggestions, and a mandatory disclaimer. Use when the user says 检测, 合规检测, 内容合规, 审一下抖音/小红书选题, 查一下稿子风险, or asks whether a topic/script/visual plan can be posted or promoted.
 ---
 
 # Content Compliance Skill
@@ -89,6 +89,8 @@ commercial or promotion review risk
 regulated-industry risk
 ```
 
+Assign every layer a `Layer Safety Score` from 1-10, where 10 means this layer looks safest and 1 means this layer is the weakest. Layers with no concern should usually score 9-10. A weak layer can receive a low safety score even when the concern is only a pending-review note, but label it as diagnostic rather than a confirmed active-rule risk.
+
 ### Step 5: Score
 
 Use `scoring.md`. Reports must explain the score using:
@@ -101,6 +103,19 @@ scenario
 fix_difficulty
 accumulation
 ```
+
+Also include:
+
+```text
+Total Risk Score
+Overall Safety Score
+Risk Bar
+Safety Bar
+Layer Safety Dashboard
+Weakest Areas
+```
+
+Highlight the 1-3 lowest-scoring weak areas. Do not let a high overall score hide a local problem such as external download guidance, comment/private-message link acquisition, QR-code guidance, or promotion-specific qualification gaps.
 
 ### Step 6: Report
 

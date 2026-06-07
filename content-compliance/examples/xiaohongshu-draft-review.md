@@ -15,6 +15,9 @@
 - Phase: draft_review
 - Recommendation: 先人工复核并修改后再发布；如计划薯条，应移除评论区领取和私信资源交付表达。
 - Risk Score: 3/10
+- Overall Safety Score: 8/10
+- Risk Bar: 3/10 🟩🟩🟩⬜⬜⬜⬜⬜⬜⬜
+- Safety Bar: 8/10 🟩🟩🟩🟩🟩🟩🟩🟩⬜⬜
 - Score Breakdown:
   - severity: none; no confirmed `Status: active` rule independently scores the resource-claim wording.
   - confidence: pending-review only; the draft clearly includes resource-claim wording, but the directly relevant guidance/download rule is `needs_review`.
@@ -22,6 +25,17 @@
   - scenario: baseline caution for a draft-review uncertainty with planned Shutiao distribution and pending-review acquisition signals.
   - fix_difficulty: low to medium; title, body, and cover CTA should be edited together before manual review.
   - accumulation: 0; no active matched risks are scored and the pending guidance/download note is excluded from the final score.
+- Layer Safety Dashboard:
+  - topic: 8/10 🟩🟩🟩🟩🟩🟩🟩🟩⬜⬜, technical education topic but resource framing is emerging.
+  - title_or_cover: 6/10 🟨🟨🟨🟨🟨🟨⬜⬜⬜⬜, “资料包直接拿” creates acquisition framing.
+  - script_or_oral_wording: 6/10 🟨🟨🟨🟨🟨🟨⬜⬜⬜⬜, comment-keyword delivery needs review.
+  - visual_or_subtitle: 5/10 🟨🟨🟨🟨🟨⬜⬜⬜⬜⬜, cover and second image show link/download acquisition.
+  - external_guidance_download_comment_private_message_or_qr: 5/10 🟨🟨🟨🟨🟨⬜⬜⬜⬜⬜, pending-review weak area, not a confirmed active-rule score.
+  - promotion_or_ad_review: 7/10 🟨🟨🟨🟨🟨🟨🟨⬜⬜⬜, planned Shutiao means manual review is recommended.
+  - regulated_industry: 10/10 🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩, no regulated-industry signal.
+- Weakest Areas:
+  - external_guidance_download_comment_private_message_or_qr: 5/10. Pending-review weak area; remove “评论区回复关键词” and avoid private-message resource delivery.
+  - visual_or_subtitle: 5/10. Remove “评论区领链接” cover text and download-page imagery.
 - Matched Risks: none confirmed under `Status: active` rules.
 - Required Checks:
   - Before scoring a higher risk, verify whether the same evidence independently matches an active Shutiao category, qualification, false-marketing, or low-quality-marketing rule.

@@ -17,6 +17,9 @@
 - Phase: draft_review
 - Recommendation: 修改后再投放；如计划巨量引擎广告，不建议保留“评论区拿链接”和直接下载引导。
 - Risk Score: 7/10
+- Overall Safety Score: 3/10
+- Risk Bar: 7/10 🟥🟥🟥🟥🟥🟥🟥⬜⬜⬜
+- Safety Bar: 3/10 🟥🟥🟥⬜⬜⬜⬜⬜⬜⬜
 - Score Breakdown:
   - severity: 4, based on the strongest active OceanEngine ad-review guidance risk.
   - confidence: 1.0, because the draft explicitly says it will use OceanEngine ads and includes download/link-acquisition wording.
@@ -24,6 +27,18 @@
   - scenario: 1.2, because the risk is in a confirmed ad-review context.
   - fix_difficulty: 1.5, because title, 口播, 字幕, and visual landing-page frames all need coordinated revision.
   - accumulation: +0.75 for one additional distinct severity-4 active acquisition-path risk; no needs_review rule is scored.
+- Layer Safety Dashboard:
+  - topic: 8/10 🟩🟩🟩🟩🟩🟩🟩🟩⬜⬜, technical education topic but tied to tool access.
+  - title_or_cover: 7/10 🟨🟨🟨🟨🟨🟨🟨⬜⬜⬜, tutorial framing is acceptable but may imply resource acquisition.
+  - script_or_oral_wording: 5/10 🟨🟨🟨🟨🟨⬜⬜⬜⬜⬜, says to download projects.
+  - visual_or_subtitle: 3/10 🟥🟥🟥⬜⬜⬜⬜⬜⬜⬜, shows third-party download page and button.
+  - external_guidance_download_comment_private_message_or_qr: 2/10 🟥🟥⬜⬜⬜⬜⬜⬜⬜⬜, uses comments as link-acquisition path.
+  - promotion_or_ad_review: 3/10 🟥🟥🟥⬜⬜⬜⬜⬜⬜⬜, planned OceanEngine delivery makes review stricter.
+  - regulated_industry: 10/10 🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩, no regulated-industry signal.
+- Weakest Areas:
+  - external_guidance_download_comment_private_message_or_qr: 2/10. Remove “评论区拿链接” and avoid using comments, private messages, or customer service as the access path.
+  - visual_or_subtitle: 3/10. Remove third-party download-page frames and download-button closeups from ad material.
+  - promotion_or_ad_review: 3/10. Re-review all copy and landing paths before OceanEngine delivery.
 - Matched Risks:
   - Rule: douyin.guidance.external_download
   - Official Source: source.oceanengine.ad_management, source.oceanengine.app_miniprogram_business_norm

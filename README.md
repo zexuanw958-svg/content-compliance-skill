@@ -10,6 +10,7 @@ Codex / Claude Code skill for reviewing Douyin and Xiaohongshu self-media topics
 - Reviews titles, scripts, subtitles, visual plans, comment/private-message plans, and promotion plans before publishing.
 - Supports Douyin, DOU+ / OceanEngine contexts, Xiaohongshu, Shutiao, Pgy, and Juguang contexts.
 - Produces a 1-10 risk score with severity, confidence, exposure, scenario, fix difficulty, and accumulation factors.
+- Produces 10-cell visual bars and per-layer safety scores, so local weak spots such as external download guidance can stand out even when the overall score is acceptable.
 - Separates confirmed active-rule risks from pending-review notes.
 - Includes mandatory disclaimer text for public or team use.
 

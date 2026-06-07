@@ -189,6 +189,9 @@ class ContentComplianceSkillTest(unittest.TestCase):
             "/检测",
             "/content-compliance",
             "合规检测",
+            "Overall Safety Score",
+            "Layer Safety Dashboard",
+            "Weakest Areas",
         ]
         missing = [phrase for phrase in required_phrases if phrase not in skill]
         self.assertEqual(missing, [])
@@ -310,17 +313,42 @@ class ContentComplianceSkillTest(unittest.TestCase):
         required_sections = [
             "## 1. Basic Information",
             "## 2. Overall Conclusion",
-            "## 3. Risk List",
-            "## 4. Promotion-Specific Notes",
-            "## 5. Pending Review Notes",
-            "## 6. Disclaimer",
+            "## 3. Layer Safety Dashboard",
+            "## 4. Weakest Areas",
+            "## 5. Risk List",
+            "## 6. Promotion-Specific Notes",
+            "## 7. Pending Review Notes",
+            "## 8. Disclaimer",
         ]
         missing = [section for section in required_sections if section not in report]
         self.assertEqual(missing, [])
+        for phrase in [
+            "Overall Safety Score",
+            "Risk Bar",
+            "Safety Bar",
+            "Layer | Safety Score | Visual Bar",
+            "Area Safety Score",
+            "Confirmed Risk Status",
+        ]:
+            self.assertIn(phrase, report)
         self.assertIn(
             "These notes are not part of the Total Risk Score unless the same evidence independently matches a `Status: active` rule.",
             report,
         )
+
+    def test_scoring_defines_visual_and_layer_scores(self):
+        scoring = read_package_file("scoring.md")
+        required_phrases = [
+            "Overall Safety Score: 11 - Total Risk Score",
+            "For visual bars, always use exactly 10 cells.",
+            "Risk Bar: 3/10",
+            "Safety Bar: 8/10",
+            "Layer Safety Dashboard",
+            "external_guidance_download_comment_private_message_or_qr",
+            "Weakest Areas",
+        ]
+        missing = [phrase for phrase in required_phrases if phrase not in scoring]
+        self.assertEqual(missing, [])
 
     def test_examples_include_disclaimer_and_risk_score(self):
         for relative_path in [
@@ -342,6 +370,11 @@ class ContentComplianceSkillTest(unittest.TestCase):
         ]:
             content = read_package_file(relative_path)
             self.assertIn("Score Breakdown:", content)
+            self.assertIn("Overall Safety Score:", content)
+            self.assertIn("Risk Bar:", content)
+            self.assertIn("Safety Bar:", content)
+            self.assertIn("Layer Safety Dashboard:", content)
+            self.assertIn("Weakest Areas:", content)
             for field in SCORE_BREAKDOWN_FIELDS:
                 self.assertIn(f"- {field}:", content)
 

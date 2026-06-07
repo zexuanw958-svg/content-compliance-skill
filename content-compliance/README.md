@@ -6,6 +6,7 @@ Portable Codex / Claude Code skill for reviewing self-media topics, scripts, and
 
 - Topic Gate: check whether a topic is worth producing before writing the script.
 - Draft Review: check title, script, oral draft, subtitles, visual description, comment plan, private-message plan, and promotion plan before publishing or promoting.
+- Visual Review: show a 10-cell risk/safety bar and per-layer safety scores so the weakest local issue stands out.
 
 ## Invocation
 

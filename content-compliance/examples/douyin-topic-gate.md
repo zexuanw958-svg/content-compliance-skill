@@ -15,6 +15,9 @@
 - Phase: topic_gate
 - Recommendation: 可继续做，但避免把内容包装成绕过限制、获取资源、领取链接或站外下载教程。
 - Risk Score: 2/10
+- Overall Safety Score: 9/10
+- Risk Bar: 2/10 🟩🟩⬜⬜⬜⬜⬜⬜⬜⬜
+- Safety Bar: 9/10 🟩🟩🟩🟩🟩🟩🟩🟩🟩⬜
 - Score Breakdown:
   - severity: none; no confirmed `Status: active` rule match at topic stage.
   - confidence: no confirmed risk evidence; this is baseline caution.
@@ -22,6 +25,16 @@
   - scenario: minor editorial caution for possible future off-platform acquisition framing, not a confirmed violation.
   - fix_difficulty: low; keep the angle educational and avoid resource-claim CTA wording.
   - accumulation: 0; no active matched risks and no pending-review notes are scored.
+- Layer Safety Dashboard:
+  - topic: 9/10 🟩🟩🟩🟩🟩🟩🟩🟩🟩⬜, technical education topic.
+  - title_or_cover: 8/10 🟩🟩🟩🟩🟩🟩🟩🟩⬜⬜, future title should avoid “领取链接” framing.
+  - script_or_oral_wording: 9/10 🟩🟩🟩🟩🟩🟩🟩🟩🟩⬜, no script yet.
+  - visual_or_subtitle: 9/10 🟩🟩🟩🟩🟩🟩🟩🟩🟩⬜, no visual risk yet.
+  - external_guidance_download_comment_private_message_or_qr: 7/10 🟨🟨🟨🟨🟨🟨🟨⬜⬜⬜, watch for later resource-link guidance.
+  - promotion_or_ad_review: 10/10 🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩, no promotion plan.
+  - regulated_industry: 10/10 🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩, no regulated-industry signal.
+- Weakest Areas:
+  - external_guidance_download_comment_private_message_or_qr: 7/10. Do not turn the topic into “comment for link” or “download package” content later.
 - Required Checks:
   - The topic itself is technical education.
   - Title and angle must avoid off-platform acquisition guidance.

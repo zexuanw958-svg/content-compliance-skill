@@ -13,6 +13,9 @@
 - Phase: topic_gate
 - Recommendation: 可以继续做，但标题和封面应避免夸大、神化工具效果或设计成资料领取入口。
 - Risk Score: 2/10
+- Overall Safety Score: 9/10
+- Risk Bar: 2/10 🟩🟩⬜⬜⬜⬜⬜⬜⬜⬜
+- Safety Bar: 9/10 🟩🟩🟩🟩🟩🟩🟩🟩🟩⬜
 - Score Breakdown:
   - severity: none; no confirmed `Status: active` rule match at topic stage.
   - confidence: no confirmed risk evidence; this is baseline caution.
@@ -20,6 +23,16 @@
   - scenario: minor editorial caution for possible future exaggerated-productivity or resource-claim framing, not a confirmed violation.
   - fix_difficulty: low; keep the topic educational and avoid acquisition-style title or cover text.
   - accumulation: 0; no active matched risks and no pending-review notes are scored.
+- Layer Safety Dashboard:
+  - topic: 9/10 🟩🟩🟩🟩🟩🟩🟩🟩🟩⬜, technical education topic.
+  - title_or_cover: 8/10 🟩🟩🟩🟩🟩🟩🟩🟩⬜⬜, avoid “资料包/直接拿” framing later.
+  - script_or_oral_wording: 9/10 🟩🟩🟩🟩🟩🟩🟩🟩🟩⬜, no script yet.
+  - visual_or_subtitle: 9/10 🟩🟩🟩🟩🟩🟩🟩🟩🟩⬜, no visual risk yet.
+  - external_guidance_download_comment_private_message_or_qr: 7/10 🟨🟨🟨🟨🟨🟨🟨⬜⬜⬜, watch for later link/resource-claim framing.
+  - promotion_or_ad_review: 10/10 🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩, no promotion plan.
+  - regulated_industry: 10/10 🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩, no regulated-industry signal.
+- Weakest Areas:
+  - external_guidance_download_comment_private_message_or_qr: 7/10. Keep the later title, cover, and copy away from resource-claim acquisition.
 - Required Checks:
   - The topic is technical education.
   - Avoid off-platform acquisition, private-message resource delivery, and exaggerated productivity claims.

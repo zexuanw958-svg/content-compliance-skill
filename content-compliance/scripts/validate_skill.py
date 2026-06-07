@@ -35,6 +35,8 @@ REQUIRED_FILES = [
     "references/official-source-intake.md",
     "references/research/douyin-official-sources.md",
     "references/research/xiaohongshu-official-sources.md",
+    "commands/检测.md",
+    "commands/content-compliance.md",
     "examples/douyin-topic-gate.md",
     "examples/douyin-draft-review.md",
     "examples/xiaohongshu-topic-gate.md",
@@ -81,10 +83,12 @@ def ensure_report_sections() -> None:
     required_sections = [
         "## 1. Basic Information",
         "## 2. Overall Conclusion",
-        "## 3. Risk List",
-        "## 4. Promotion-Specific Notes",
-        "## 5. Pending Review Notes",
-        "## 6. Disclaimer",
+        "## 3. Layer Safety Dashboard",
+        "## 4. Weakest Areas",
+        "## 5. Risk List",
+        "## 6. Promotion-Specific Notes",
+        "## 7. Pending Review Notes",
+        "## 8. Disclaimer",
     ]
     missing = [section for section in required_sections if section not in report]
     if missing:
@@ -100,9 +104,33 @@ def ensure_report_score_breakdown() -> None:
         fail(f"report template score breakdown missing fields: {missing}")
 
 
+def ensure_report_visual_fields() -> None:
+    report = read("templates/report.md")
+    required = [
+        "Overall Safety Score",
+        "Risk Bar",
+        "Safety Bar",
+        "Layer | Safety Score | Visual Bar",
+        "Area Safety Score",
+        "Confirmed Risk Status",
+    ]
+    missing = [item for item in required if item not in report]
+    if missing:
+        fail(f"report template visual fields missing: {missing}")
+
+
 def ensure_scoring_constants() -> None:
     scoring = read("scoring.md")
-    required = ["15.75", "severity 3: +0.5", "severity 4: +0.75", "accumulation cap: 2"]
+    required = [
+        "15.75",
+        "severity 3: +0.5",
+        "severity 4: +0.75",
+        "accumulation cap: 2",
+        "Overall Safety Score: 11 - Total Risk Score",
+        "For visual bars, always use exactly 10 cells.",
+        "Layer Safety Dashboard",
+        "Weakest Areas",
+    ]
     missing = [item for item in required if item not in scoring]
     if missing:
         fail(f"scoring constants missing: {missing}")
@@ -315,6 +343,19 @@ def ensure_examples_are_complete(declared_source_ids: set[str]) -> None:
             fail(f"example missing disclaimer: {example_path}")
         if "Risk Score:" not in content:
             fail(f"example missing risk score: {example_path}")
+        missing_visual_fields = [
+            field
+            for field in [
+                "Overall Safety Score:",
+                "Risk Bar:",
+                "Safety Bar:",
+                "Layer Safety Dashboard:",
+                "Weakest Areas:",
+            ]
+            if field not in content
+        ]
+        if missing_visual_fields:
+            fail(f"example visual fields missing in {example_path}: {missing_visual_fields}")
         missing_score_breakdown_factors = [
             factor
             for factor in REQUIRED_SCORE_BREAKDOWN_FACTORS
@@ -357,6 +398,7 @@ def main() -> int:
     ensure_disclaimer()
     ensure_report_sections()
     ensure_report_score_breakdown()
+    ensure_report_visual_fields()
     ensure_scoring_constants()
     source_statuses = ensure_sources_inventory()
     declared_source_ids = set(source_statuses)
