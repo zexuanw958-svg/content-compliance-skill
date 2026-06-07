@@ -160,9 +160,38 @@ class ContentComplianceSkillTest(unittest.TestCase):
             "support.oceanengine.com",
             "pgy.xiaohongshu.com",
             "e.xiaohongshu.com",
+            "ad.xiaohongshu.com",
         ]
         missing = [domain for domain in required_domains if domain not in sources]
         self.assertEqual(missing, [])
+
+    def test_report_template_includes_required_sections(self):
+        report = read_package_file("templates/report.md")
+        required_sections = [
+            "## 1. Basic Information",
+            "## 2. Overall Conclusion",
+            "## 3. Risk List",
+            "## 4. Promotion-Specific Notes",
+            "## 5. Pending Review Notes",
+            "## 6. Disclaimer",
+        ]
+        missing = [section for section in required_sections if section not in report]
+        self.assertEqual(missing, [])
+        self.assertIn(
+            "These notes are not part of the Total Risk Score unless the same evidence independently matches a `Status: active` rule.",
+            report,
+        )
+
+    def test_examples_include_disclaimer_and_risk_score(self):
+        for relative_path in [
+            "examples/douyin-topic-gate.md",
+            "examples/douyin-draft-review.md",
+            "examples/xiaohongshu-topic-gate.md",
+            "examples/xiaohongshu-draft-review.md",
+        ]:
+            content = read_package_file(relative_path)
+            self.assertIn("免责声明：本报告为 AI 辅助合规参考", content)
+            self.assertIn("Risk Score:", content)
 
     def test_active_rules_include_traceability_without_evidence_limitations(self):
         for relative_path in ["rules/douyin.md", "rules/xiaohongshu.md"]:

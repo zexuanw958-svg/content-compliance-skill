@@ -12,6 +12,7 @@ REQUIRED_OFFICIAL_DOMAINS = [
     "support.oceanengine.com",
     "pgy.xiaohongshu.com",
     "e.xiaohongshu.com",
+    "ad.xiaohongshu.com",
 ]
 
 
@@ -58,6 +59,21 @@ def ensure_disclaimer() -> None:
     report = read("templates/report.md")
     if DISCLAIMER not in report:
         fail("mandatory disclaimer is missing from report template")
+
+
+def ensure_report_sections() -> None:
+    report = read("templates/report.md")
+    required_sections = [
+        "## 1. Basic Information",
+        "## 2. Overall Conclusion",
+        "## 3. Risk List",
+        "## 4. Promotion-Specific Notes",
+        "## 5. Pending Review Notes",
+        "## 6. Disclaimer",
+    ]
+    missing = [section for section in required_sections if section not in report]
+    if missing:
+        fail(f"report template sections missing: {missing}")
 
 
 def ensure_scoring_constants() -> None:
@@ -160,14 +176,30 @@ def ensure_rule_cards_have_valid_statuses() -> None:
             )
 
 
+def ensure_examples_are_complete() -> None:
+    for example_path in [
+        "examples/douyin-topic-gate.md",
+        "examples/douyin-draft-review.md",
+        "examples/xiaohongshu-topic-gate.md",
+        "examples/xiaohongshu-draft-review.md",
+    ]:
+        content = read(example_path)
+        if "免责声明：本报告为 AI 辅助合规参考" not in content:
+            fail(f"example missing disclaimer: {example_path}")
+        if "Risk Score:" not in content:
+            fail(f"example missing risk score: {example_path}")
+
+
 def main() -> int:
     ensure_required_files()
     ensure_disclaimer()
+    ensure_report_sections()
     ensure_scoring_constants()
     declared_source_ids = ensure_sources_inventory()
     ensure_rule_cards_have_source_ids()
     ensure_rule_card_sources_are_declared(declared_source_ids)
     ensure_rule_cards_have_valid_statuses()
+    ensure_examples_are_complete()
     print("content-compliance skill validation passed")
     return 0
 
