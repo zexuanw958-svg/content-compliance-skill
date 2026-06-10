@@ -1,6 +1,6 @@
 ---
 name: content-compliance
-description: Review Douyin and Xiaohongshu self-media topics, scripts, and visual descriptions using official-source-backed platform rule cards, a 1-10 risk score, visual safety bars, weak-area scores, rewrite suggestions, and a mandatory disclaimer. Use when the user says 检测, 合规检测, 内容合规, 审一下抖音/小红书选题, 查一下稿子风险, or asks whether a topic/script/visual plan can be posted or promoted.
+description: Review Douyin and Xiaohongshu self-media topics, scripts, and visual descriptions using official-source-backed platform rule cards, a 1-10 risk score, a uniform-color visual risk bar, weak-area safety scores, rewrite suggestions, and a mandatory disclaimer. Use when the user says 检测, 合规检测, 内容合规, 审一下抖音/小红书选题, 查一下稿子风险, or asks whether a topic/script/visual plan can be posted or promoted.
 ---
 
 # Content Compliance Skill

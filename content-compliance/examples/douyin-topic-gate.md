@@ -14,7 +14,7 @@
 - Platform: Douyin
 - Phase: topic_gate
 - Recommendation: 可继续做，但避免把内容包装成绕过限制、获取资源、领取链接或站外下载教程。
-- Risk Score: 2/10
+- Total Risk Score: 2/10
 - Risk Bar: 2/10 🟩🟩⬜⬜⬜⬜⬜⬜⬜⬜ (low-risk)
 - Score Breakdown:
   - severity: none; no confirmed `Status: active` rule match at topic stage.

@@ -16,7 +16,7 @@
 - Platform: Douyin
 - Phase: draft_review
 - Recommendation: 修改后再投放；如计划巨量引擎广告，不建议保留“评论区拿链接”和直接下载引导。
-- Risk Score: 7/10
+- Total Risk Score: 7/10
 - Risk Bar: 7/10 🟥🟥🟥🟥🟥🟥🟥⬜⬜⬜ (high-risk)
 - Score Breakdown:
   - severity: 4, based on the strongest active OceanEngine ad-review guidance risk.

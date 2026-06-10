@@ -14,7 +14,7 @@
 - Platform: Xiaohongshu
 - Phase: draft_review
 - Recommendation: 先人工复核并修改后再发布；如计划薯条，应移除评论区领取和私信资源交付表达。
-- Risk Score: 3/10
+- Total Risk Score: 3/10
 - Risk Bar: 3/10 🟩🟩🟩⬜⬜⬜⬜⬜⬜⬜ (low-risk)
 - Score Breakdown:
   - severity: none; no confirmed `Status: active` rule independently scores the resource-claim wording.
@@ -40,7 +40,7 @@
   - Do not score the comment/link acquisition concern through the Shutiao context rule unless a directly supported active rule is added.
 - 待复核提示:
   - Rule: xiaohongshu.guidance.external_contact_or_download
-  - Note: 这条风险只能作为待复核提示，因为当前规则卡处于 `needs_review`，官方来源覆盖范围或规则解释仍需人工复核。它不支持本示例的 `Risk Score`。
+  - Note: 这条风险只能作为待复核提示，因为当前规则卡处于 `needs_review`，官方来源覆盖范围或规则解释仍需人工复核。它不支持本示例的 `Total Risk Score`。
 
 ## Disclaimer
 

@@ -8,13 +8,14 @@ This file is now a historical implementation record, not an active task list. Th
 
 **Goal:** Build a portable Codex / Code X, Claude Code, OpenClaw, and Hermes Agent skill that reviews Douyin and Xiaohongshu self-media content against official-source-backed compliance rules.
 
-**Architecture:** The skill is a Markdown-first package under `content-compliance/`. `SKILL.md` routes the user's platform and production phase, platform rule packs store structured rule cards, `scoring.md` defines the 1-10 risk score, overall safety score, 10-cell visual bars, and weak-area scoring, `templates/report.md` defines the required report shape, and `references/` records official source intake. A Python validation script enforces source traceability, disclaimer presence, scoring constants, example coverage, command aliases, and README runtime coverage.
+**Architecture:** The skill is a Markdown-first package under `content-compliance/`. `SKILL.md` routes the user's platform and production phase, platform rule packs store structured rule cards, `scoring.md` defines the 1-10 total risk score, single uniform-color 10-cell risk bar, and weak-area safety scoring, `templates/report.md` defines the required report shape, and `references/` records official source intake. A Python validation script enforces source traceability, disclaimer presence, scoring constants, example coverage, command aliases, and README runtime coverage.
 
 ## Current Package State
 
 - Runtime compatibility: Codex / Code X, Claude Code, OpenClaw, Hermes Agent, plus other compatible `SKILL.md` folder runtimes.
 - Invocation: Chinese natural triggers, `/检测`, and `/content-compliance`.
 - Public README: Chinese-first, creator-facing, with install instructions for all four target runtimes.
+- Final visual output: one `Total Risk Score` plus one `Risk Bar`; no final overall safety score or safety bar. Risk bar fill count equals the risk score, and filled cells use one uniform color from the score band.
 - Visual assets: `assets/readme-banner.png` for GitHub README display, `assets/readme-banner-source.png` as the source image, and `assets/readme-banner.prompt.md` for regeneration.
 - Validation command: `python3 content-compliance/scripts/validate_skill.py`.
 - Regression command: `python3 -m unittest tests/test_content_compliance_skill.py -v`.

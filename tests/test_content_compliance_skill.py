@@ -287,7 +287,7 @@ class ContentComplianceSkillTest(unittest.TestCase):
         scored_section = content.split("- 待复核提示:", 1)[0]
 
         self.assertIn("Matched Risks: none confirmed under `Status: active` rules.", content)
-        self.assertIn("它不支持本示例的 `Risk Score`", content)
+        self.assertIn("它不支持本示例的 `Total Risk Score`", content)
         self.assertNotIn("Rule: xiaohongshu.guidance.external_contact_or_download", scored_section)
         self.assertNotIn("Rule: xiaohongshu.promotion.shutiao_review_stricter_context", scored_section)
 
@@ -379,7 +379,7 @@ class ContentComplianceSkillTest(unittest.TestCase):
         ]:
             content = read_package_file(relative_path)
             self.assertIn("免责声明：本报告为 AI 辅助合规参考", content)
-            self.assertIn("Risk Score:", content)
+            self.assertIn("Total Risk Score:", content)
 
     def test_examples_include_score_breakdown_fields(self):
         for relative_path in [

@@ -197,7 +197,7 @@ content-compliance/
 content-compliance/
   SKILL.md                         # Skill 主流程和触发说明
   rules/                           # 抖音 / 小红书规则卡
-  scoring.md                       # 风险分、可视化进度条和分项安全分算法
+  scoring.md                       # 风险分、可视化进度条和分项安全诊断分算法
   templates/report.md              # 检测报告模板
   references/                      # 官方来源清单和调研记录
   examples/                        # 抖音 / 小红书示例报告

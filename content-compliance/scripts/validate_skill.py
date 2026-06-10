@@ -349,7 +349,7 @@ def ensure_examples_are_complete(declared_source_ids: set[str]) -> None:
         content = read(example_path)
         if "免责声明：本报告为 AI 辅助合规参考" not in content:
             fail(f"example missing disclaimer: {example_path}")
-        if "Risk Score:" not in content:
+        if "Total Risk Score:" not in content:
             fail(f"example missing risk score: {example_path}")
         missing_visual_fields = [
             field
