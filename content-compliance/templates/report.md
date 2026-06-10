@@ -1,87 +1,87 @@
-# Content Compliance Review Report
+# 内容合规检测报告
 
-## 1. Basic Information
+## 1. 基本信息
 
-- Platform:
-- Phase:
-- Material Types:
-- Promotion Plan:
-- Rule Source Date:
+- 平台：
+- 阶段：
+- 材料类型：
+- 是否计划投放：
+- 规则来源日期：
 
-## 2. Overall Conclusion
+## 2. 总体结论
 
-- Recommendation:
-- Total Risk Score:
-- Risk Bar: fill cells equal to Total Risk Score, using one uniform color from the risk band.
-- One-Sentence Rationale:
-- Score Breakdown:
-  - severity:
-  - confidence:
-  - exposure:
-  - scenario:
-  - fix_difficulty:
-  - accumulation:
-  - Pending-review notes are not scored unless the same evidence independently matches a `Status: active` rule.
+- 建议：
+- 总风险分：
+- 风险条：填充格数等于总风险分，填充颜色由风险档位统一决定。
+- 一句话说明：
+- 评分拆解：
+  - 严重度 severity：
+  - 置信度 confidence：
+  - 暴露范围 exposure：
+  - 场景系数 scenario：
+  - 修改难度 fix_difficulty：
+  - 风险累积 accumulation：
+  - 待复核提示不计入总风险分，除非同一证据也独立命中 `Status: active` 规则。
 
-## 3. Layer Safety Dashboard
+## 3. 分项安全诊断仪表盘
 
-| Layer | Safety Score | Visual Bar | Status | Evidence | Fast Fix |
+| 分项 | 安全诊断分 | 可视化条 | 状态 | 证据 | 快速改法 |
 | --- | ---: | --- | --- | --- | --- |
-| topic |  |  |  |  |  |
-| title_or_cover |  |  |  |  |  |
-| script_or_oral_wording |  |  |  |  |  |
-| visual_or_subtitle |  |  |  |  |  |
-| external_guidance_download_comment_private_message_or_qr |  |  |  |  |  |
-| promotion_or_ad_review |  |  |  |  |  |
-| regulated_industry |  |  |  |  |  |
+| 选题 |  |  |  |  |  |
+| 标题/封面 |  |  |  |  |  |
+| 口播/正文话术 |  |  |  |  |  |
+| 画面/字幕 |  |  |  |  |  |
+| 外部引导/下载/评论/私信/二维码 |  |  |  |  |  |
+| 投放/广告审核 |  |  |  |  |  |
+| 强监管行业 |  |  |  |  |  |
 
-## 4. Weakest Areas
+## 4. 最弱风险点
 
-List the 1-3 lowest-scoring areas. Include weak areas even when they are pending-review or context risks rather than confirmed active-rule risks.
+列出安全诊断分最低的 1-3 个分项。即使只是待复核提示或上下文风险，也要列出来，但必须说明它是不是确认风险。
 
-### Weak Area 1
+### 最弱风险点 1
 
-- Area:
-- Area Safety Score:
-- Area Bar:
-- Evidence Location:
-- Why It Is Weak:
-- Confirmed Risk Status:
-- Fast Fix:
-- Conservative Fix:
+- 分项：
+- 分项安全诊断分：
+- 分项可视化条：
+- 证据位置：
+- 为什么弱：
+- 确认风险状态：
+- 快速改法：
+- 保守改法：
 
-## 5. Risk List
+## 5. 风险清单
 
-### Risk 1
+### 风险 1
 
-- Risk Point:
-- Risk Level:
-- Item Score:
-- Area Safety Score:
-- Area Bar:
-- Evidence Location:
-- Matched Rule:
-- Official Source:
-- Why It Is Risky:
-- Recommended Revision:
-- Conservative Revision:
-- Avoid This Wording:
+- 风险点：
+- 风险等级：
+- 单项分：
+- 分项安全诊断分：
+- 分项可视化条：
+- 证据位置：
+- 命中规则：
+- 官方来源：
+- 为什么有风险：
+- 推荐改法：
+- 保守改法：
+- 不建议写法：
 
-## 6. Promotion-Specific Notes
+## 6. 投放专项提醒
 
-- DOU+ / Shutiao / Pgy / Juguang / OceanEngine notes:
+- DOU+ / 薯条 / 蒲公英 / 聚光 / 巨量引擎相关提醒：
 
-## 7. Pending Review Notes
+## 7. 待复核提示
 
-These notes are not part of the Total Risk Score unless the same evidence independently matches a `Status: active` rule.
+这些提示不计入总风险分，除非同一证据也独立命中 `Status: active` 规则。
 
-### Pending Note 1
+### 待复核提示 1
 
-- Risk Point:
-- Matched Rule:
-- Why It Needs Review:
-- Suggested Manual Check:
+- 风险点：
+- 命中规则：
+- 为什么需要复核：
+- 建议人工确认：
 
-## 8. Disclaimer
+## 8. 免责声明
 
 免责声明：本报告为 AI 辅助合规参考，依据公开可见的平台规则、整理后的规则卡片以及用户提供的材料生成，不代表抖音、巨量引擎、小红书、蒲公英、聚光、薯条或任何相关平台的官方审核意见。本报告不保证内容发布成功、投放审核通过、获得流量推荐、账号安全或完全符合法律法规。平台规则和审核尺度可能随时间、账号状态、内容上下文和执行口径变化。用户应自行核对最新官方规则，并对内容发布、商业推广、广告合规及相关法律责任负责。涉及法律、医疗、金融、教育、未成年人、食品药品等高风险或强监管领域时，请咨询具备资质的专业人士或平台官方渠道。

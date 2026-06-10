@@ -1,6 +1,6 @@
-# Douyin Topic Gate Example
+# 抖音选题预审示例
 
-## Input
+## 输入
 
 ```text
 平台：抖音
@@ -9,35 +9,35 @@
 是否计划投放：否
 ```
 
-## Expected Review Shape
+## 期望报告结构
 
-- Platform: Douyin
-- Phase: topic_gate
-- Recommendation: 可继续做，但避免把内容包装成绕过限制、获取资源、领取链接或站外下载教程。
-- Total Risk Score: 2/10
-- Risk Bar: 2/10 🟩🟩⬜⬜⬜⬜⬜⬜⬜⬜ (low-risk)
-- Score Breakdown:
-  - severity: none; no confirmed `Status: active` rule match at topic stage.
-  - confidence: no confirmed risk evidence; this is baseline caution.
-  - exposure: ordinary topic planning only, with no promotion plan.
-  - scenario: minor editorial caution for possible future off-platform acquisition framing, not a confirmed violation.
-  - fix_difficulty: low; keep the angle educational and avoid resource-claim CTA wording.
-  - accumulation: 0; no active matched risks and no pending-review notes are scored.
-- Layer Safety Dashboard:
-  - topic: 9/10 🟩🟩🟩🟩🟩🟩🟩🟩🟩⬜, technical education topic.
-  - title_or_cover: 8/10 🟩🟩🟩🟩🟩🟩🟩🟩⬜⬜, future title should avoid “领取链接” framing.
-  - script_or_oral_wording: 9/10 🟩🟩🟩🟩🟩🟩🟩🟩🟩⬜, no script yet.
-  - visual_or_subtitle: 9/10 🟩🟩🟩🟩🟩🟩🟩🟩🟩⬜, no visual risk yet.
-  - external_guidance_download_comment_private_message_or_qr: 7/10 🟨🟨🟨🟨🟨🟨🟨⬜⬜⬜, watch for later resource-link guidance.
-  - promotion_or_ad_review: 10/10 🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩, no promotion plan.
-  - regulated_industry: 10/10 🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩, no regulated-industry signal.
-- Weakest Areas:
-  - external_guidance_download_comment_private_message_or_qr: 7/10. Do not turn the topic into “comment for link” or “download package” content later.
-- Required Checks:
-  - The topic itself is technical education.
-  - Title and angle must avoid off-platform acquisition guidance.
-  - If promotion is planned later, rerun Draft Review with the actual promotion or ad-delivery context.
+- 平台：抖音
+- 阶段：选题预审
+- 建议：可继续做，但避免把内容包装成绕过限制、获取资源、领取链接或站外下载教程。
+- 总风险分：2/10
+- 风险条：2/10 🟩🟩⬜⬜⬜⬜⬜⬜⬜⬜（低风险）
+- 评分拆解：
+  - 严重度 severity：无；选题阶段没有命中确认 `Status: active` 规则。
+  - 置信度 confidence：没有确认风险证据，这是基线谨慎分。
+  - 暴露范围 exposure：仅为普通选题规划，未提供投放计划。
+  - 场景系数 scenario：轻微编辑提醒，后续不要包装成站外获取资源。
+  - 修改难度 fix_difficulty：低；保持教育向表达，避免资料领取式 CTA。
+  - 风险累积 accumulation：0；没有 active 命中风险，待复核提示不计分。
+- 分项安全诊断仪表盘：
+  - 选题：9/10 🟩🟩🟩🟩🟩🟩🟩🟩🟩⬜，技术教育选题本身可做。
+  - 标题/封面：8/10 🟩🟩🟩🟩🟩🟩🟩🟩⬜⬜，后续标题避免“领取链接”框架。
+  - 口播/正文话术：9/10 🟩🟩🟩🟩🟩🟩🟩🟩🟩⬜，还没有成稿。
+  - 画面/字幕：9/10 🟩🟩🟩🟩🟩🟩🟩🟩🟩⬜，还没有画面风险。
+  - 外部引导/下载/评论/私信/二维码：7/10 🟨🟨🟨🟨🟨🟨🟨⬜⬜⬜，后续要避免资源链接引导。
+  - 投放/广告审核：10/10 🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩，未计划投放。
+  - 强监管行业：10/10 🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩，无强监管行业信号。
+- 最弱风险点：
+  - 外部引导/下载/评论/私信/二维码：7/10。后续不要把选题写成“评论区拿链接”或“下载资料包”。
+- 必要检查：
+  - 选题本身属于技术教育。
+  - 标题和角度要避免站外获取资源的表达。
+  - 如果后续计划投放，拿实际投放文案和落地页再跑一次成稿检测。
 
-## Disclaimer
+## 免责声明
 
 免责声明：本报告为 AI 辅助合规参考，依据公开可见的平台规则、整理后的规则卡片以及用户提供的材料生成，不代表抖音、巨量引擎、小红书、蒲公英、聚光、薯条或任何相关平台的官方审核意见。本报告不保证内容发布成功、投放审核通过、获得流量推荐、账号安全或完全符合法律法规。平台规则和审核尺度可能随时间、账号状态、内容上下文和执行口径变化。用户应自行核对最新官方规则，并对内容发布、商业推广、广告合规及相关法律责任负责。涉及法律、医疗、金融、教育、未成年人、食品药品等高风险或强监管领域时，请咨询具备资质的专业人士或平台官方渠道。

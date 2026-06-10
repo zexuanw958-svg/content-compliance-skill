@@ -1,22 +1,22 @@
-# Risk Scoring
+# 风险评分算法
 
-Only confirmed risks matched by `Status: active` rule cards are item-score inputs.
+只有命中 `Status: active` 规则卡的确认风险，才进入单项分计算。
 
-`Status: needs_review` matches are pending-review notes. They do not enter item score, accumulation, or final score unless the same evidence independently matches a `Status: active` rule.
+`Status: needs_review` 命中项属于待复核提示。它们不进入单项分、风险累积或总风险分，除非同一证据也独立命中 `Status: active` 规则。
 
-Each risk item receives an item score:
+每个确认风险项的单项分：
 
 ```text
 item_score = severity × confidence × exposure × scenario × fix_difficulty
 ```
 
-The theoretical item-score maximum is 15.75, from:
+理论单项分上限是 15.75，来自：
 
 ```text
 5 × 1.0 × 1.5 × 1.4 × 1.5
 ```
 
-Final score:
+总风险分：
 
 ```text
 max_item_score = highest item_score
@@ -26,7 +26,7 @@ accumulation = extra risks capped at 2
 final_score = min(10, round(base + accumulation))
 ```
 
-Accumulation:
+风险累积：
 
 ```text
 severity 1-2: +0.25 each
@@ -36,91 +36,91 @@ severity 5: +1.0 each
 accumulation cap: 2
 ```
 
-Do not double-count the same evidence across overlapping active rules. If one phrase, frame, CTA, landing-page flow, or qualification gap triggers several closely related active rules, score the strongest matching item and use the overlap only in the rationale unless there is distinct evidence for another item.
+不要重复计算同一证据。如果同一句话、同一画面、同一个 CTA、同一个落地页流程或同一个资质缺口触发多条高度重叠的 active 规则，只计算最强命中的那一项，其他重叠规则只写进解释；除非存在另一条独立证据。
 
-If no `Status: active` rule matches, use a low baseline caution score instead of a confirmed-risk score:
-
-```text
-1: baseline caution, no concern found
-2: baseline caution, minor editorial caution
-3: baseline caution, unresolved topic-gate uncertainty such as missing promotion context, missing regulated-category context, incomplete distribution assumptions, or draft-review uncertainty where only `Status: needs_review` rules are implicated
-```
-
-Label baseline scores as baseline caution, not confirmed violations or confirmed risks.
-
-Score bands:
+如果没有命中任何 `Status: active` 规则，用低基线谨慎分，而不是确认风险分：
 
 ```text
-1-2: low risk, publishable reference
-3-4: light to medium risk, minor edits recommended
-5-6: medium risk, revise before publishing
-7-8: high risk, do not publish directly
-9-10: very high risk, reframe or rewrite
+1：基线谨慎，无明显问题
+2：基线谨慎，轻微表达提醒
+3：基线谨慎，存在未解决的上下文不确定性，例如缺少投放语境、缺少强监管行业信息、分发假设不完整，或只涉及 `Status: needs_review` 的待复核规则
 ```
 
-Reports must explain the score. Do not output only a number. Include the factors `severity`, `confidence`, `exposure`, `scenario`, `fix_difficulty`, and `accumulation`, and make clear when pending-review notes were excluded from scoring.
+基线分必须标注为“基线谨慎”，不能写成确认违规或确认风险。
 
-## Visual Scores
-
-Reports must include one risk-oriented visual for the final score:
+分数档位：
 
 ```text
-Total Risk Score: 1-10, higher means riskier.
+1-2：低风险，可作为发布参考
+3-4：轻中风险，建议小改
+5-6：中风险，发布前建议修改
+7-8：高风险，不建议直接发布
+9-10：很高风险，建议重构或重写
 ```
 
-For the visual bar, always use exactly 10 cells.
+报告必须解释分数，不能只给数字。评分拆解必须包含 `severity`、`confidence`、`exposure`、`scenario`、`fix_difficulty`、`accumulation`，并说明待复核提示是否被排除在总风险分之外。
 
-Risk Bar is a score-fill bar with one uniform color. Fill cells equal to Total Risk Score, leave the rest empty, and choose the filled-cell color from the score band:
+## 可视化分数
+
+报告最终分只输出一个风险导向的可视化结果：
 
 ```text
-1-4: 🟩 low-risk filled cells
-5-6: 🟨 medium-risk filled cells
-7-10: 🟥 high-risk filled cells
-Empty cells: ⬜
+总风险分：1-10，分数越高风险越高。
 ```
 
-Risk Bar output format:
+风险条必须固定 10 格。
+
+风险条是“按分数填充”的统一颜色条。填充格数等于总风险分，剩余格为空格，并按风险档位选择一种统一填充颜色：
 
 ```text
-Risk Bar: <score>/10 <filled cells in one band color><empty cells> (<low-risk|medium-risk|high-risk>)
+1-4：🟩 低风险填充格
+5-6：🟨 中风险填充格
+7-10：🟥 高风险填充格
+空格：⬜
 ```
 
-Do not output both a final Risk Bar and a final Safety Bar. Overall safety is only the inverse of risk and adds visual noise. Keep one final risk score and one final risk bar.
-
-Layer Safety Scores remain useful because they identify weak local areas. Keep them in the Layer Safety Dashboard.
-
-Examples:
+风险条输出格式：
 
 ```text
-Risk Bar: 3/10 🟩🟩🟩⬜⬜⬜⬜⬜⬜⬜ (low-risk)
-Risk Bar: 5/10 🟨🟨🟨🟨🟨⬜⬜⬜⬜⬜ (medium-risk)
-Risk Bar: 9/10 🟥🟥🟥🟥🟥🟥🟥🟥🟥⬜ (high-risk)
+风险条：<分数>/10 <同一档位颜色的填充格><空格>（低风险|中风险|高风险）
 ```
 
-## Layer Safety Scores
+不要同时输出最终风险条和最终安全条。整体安全分只是总风险分的反向表达，会增加视觉噪音。最终只保留一个 `总风险分` 和一个 `风险条`。
 
-Layer safety scores are diagnostic scores for user readability. They help expose local weak spots even when the official-source-backed `Total Risk Score` remains low.
+分项安全诊断分仍然有用，因为它能帮助用户定位局部弱点。它应该保留在 `分项安全诊断仪表盘` 中。
 
-Use these bands:
+示例：
 
 ```text
-9-10: clean or only negligible wording caution
-8: minor wording caution
-6-7: pending-review concern, missing context, or moderate edit recommended
-4-5: confirmed active-rule concern or strong pending-review concern; revise before publishing or promotion
-1-3: major confirmed concern, paid-promotion blocker, or severe off-platform acquisition/qualification issue
+风险条：3/10 🟩🟩🟩⬜⬜⬜⬜⬜⬜⬜（低风险）
+风险条：5/10 🟨🟨🟨🟨🟨⬜⬜⬜⬜⬜（中风险）
+风险条：9/10 🟥🟥🟥🟥🟥🟥🟥🟥🟥⬜（高风险）
 ```
 
-Every report must include a `Layer Safety Dashboard` with the standard layers:
+## 分项安全诊断分
+
+分项安全诊断分是给用户看的诊断分，用来暴露局部弱点。即使官方来源支撑的 `总风险分` 不高，它也能提醒用户某个局部表达不稳。
+
+分项安全诊断分档位：
 
 ```text
-topic
-title_or_cover
-script_or_oral_wording
-visual_or_subtitle
-external_guidance_download_comment_private_message_or_qr
-promotion_or_ad_review
-regulated_industry
+9-10：干净，或只有极轻微表达提醒
+8：轻微表达提醒
+6-7：待复核问题、上下文缺失，或建议中等幅度修改
+4-5：确认 active 规则问题，或强待复核问题；发布或投放前应修改
+1-3：重大确认问题、投放阻断点，或严重站外获取/资质问题
 ```
 
-After the dashboard, list `Weakest Areas`: the 1-3 layers with the lowest safety scores. For each weak area, include evidence location, why it is weak, and the fastest safe revision. Pending-review weak areas must explicitly say they are not confirmed active-rule risks unless the same evidence independently matches an active rule.
+每份报告必须包含 `分项安全诊断仪表盘`，标准分项为：
+
+```text
+选题
+标题/封面
+口播/正文话术
+画面/字幕
+外部引导/下载/评论/私信/二维码
+投放/广告审核
+强监管行业
+```
+
+仪表盘后必须列出 `最弱风险点`：安全诊断分最低的 1-3 个分项。每个弱点要包含证据位置、为什么弱、最快安全改法。待复核弱点必须明确说明：它不是确认 active 规则风险，除非同一证据也独立命中 active 规则。

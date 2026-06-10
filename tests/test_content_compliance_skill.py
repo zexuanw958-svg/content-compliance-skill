@@ -14,12 +14,12 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 PACKAGE = ROOT / "content-compliance"
 SCORE_BREAKDOWN_FIELDS = [
-    "severity",
-    "confidence",
-    "exposure",
-    "scenario",
-    "fix_difficulty",
-    "accumulation",
+    "严重度 severity",
+    "置信度 confidence",
+    "暴露范围 exposure",
+    "场景系数 scenario",
+    "修改难度 fix_difficulty",
+    "风险累积 accumulation",
 ]
 
 
@@ -82,13 +82,13 @@ def parse_source_review_statuses() -> dict[str, str]:
 
 def scored_rules_in_example(relative_path: Path) -> list[str]:
     rules = []
-    pending_review_boundaries = ("- Pending Review Notes:", "- 待复核提示:")
+    pending_review_boundaries = ("- 待复核提示:", "- 待复核提示：")
     for line in relative_path.read_text(encoding="utf-8").splitlines():
         stripped_line = line.strip()
         if stripped_line in pending_review_boundaries:
             break
 
-        rule_match = re.match(r"\s*-\s*Rule:\s*([A-Za-z0-9_.-]+)\s*$", line)
+        rule_match = re.match(r"\s*-\s*(?:Rule|规则)[：:]\s*([A-Za-z0-9_.-]+)\s*$", line)
         if rule_match:
             rules.append(rule_match.group(1))
     return rules
@@ -96,7 +96,7 @@ def scored_rules_in_example(relative_path: Path) -> list[str]:
 
 def scored_rule_blocks_in_example(relative_path: Path) -> list[tuple[str, str]]:
     blocks = []
-    pending_review_boundaries = ("- Pending Review Notes:", "- 待复核提示:")
+    pending_review_boundaries = ("- 待复核提示:", "- 待复核提示：")
     current_rule = None
     current_block = []
     for line in relative_path.read_text(encoding="utf-8").splitlines():
@@ -104,7 +104,7 @@ def scored_rule_blocks_in_example(relative_path: Path) -> list[tuple[str, str]]:
         if stripped_line in pending_review_boundaries:
             break
 
-        rule_match = re.match(r"\s*-\s*Rule:\s*([A-Za-z0-9_.-]+)\s*$", line)
+        rule_match = re.match(r"\s*-\s*(?:Rule|规则)[：:]\s*([A-Za-z0-9_.-]+)\s*$", line)
         if rule_match:
             if current_rule:
                 blocks.append((current_rule, "\n".join(current_block)))
@@ -181,18 +181,18 @@ class ContentComplianceSkillTest(unittest.TestCase):
             "rules/douyin.md",
             "rules/xiaohongshu.md",
             "templates/report.md",
-            "mandatory disclaimer",
-            "Only `Status: active`",
-            "final score",
+            "免责声明",
+            "只有命中 `Status: active`",
+            "总风险分",
             "needs_review",
-            "not in confirmed risks or final score",
+            "不得计入确认风险或总风险分",
             "这条风险只能作为待复核提示，因为当前规则卡处于 `needs_review`，官方来源覆盖范围或规则解释仍需人工复核。",
             "/检测",
             "/content-compliance",
             "合规检测",
-            "Layer Safety Dashboard",
-            "Weakest Areas",
-            "Do not output Overall Safety Score or Safety Bar",
+            "分项安全诊断仪表盘",
+            "最弱风险点",
+            "不要输出最终“整体安全分”、最终“安全条”",
         ]
         missing = [phrase for phrase in required_phrases if phrase not in skill]
         self.assertEqual(missing, [])
@@ -239,7 +239,7 @@ class ContentComplianceSkillTest(unittest.TestCase):
         failures = []
         for example_path in (PACKAGE / "examples").glob("*.md"):
             for rule_id, block in scored_rule_blocks_in_example(example_path):
-                if re.search(r"^\s*-\s*Official Source:\s*source\.", block, flags=re.M):
+                if re.search(r"^\s*-\s*官方来源[：:]\s*source\.", block, flags=re.M):
                     continue
                 failures.append(f"{example_path.name}: {rule_id}")
 
@@ -285,12 +285,12 @@ class ContentComplianceSkillTest(unittest.TestCase):
     def test_xiaohongshu_pending_guidance_example_is_not_scored(self):
         example_path = PACKAGE / "examples" / "xiaohongshu-draft-review.md"
         content = example_path.read_text(encoding="utf-8")
-        scored_section = content.split("- 待复核提示:", 1)[0]
+        scored_section = re.split(r"- 待复核提示[：:]", content, maxsplit=1)[0]
 
-        self.assertIn("Matched Risks: none confirmed under `Status: active` rules.", content)
-        self.assertIn("它不支持本示例的 `Total Risk Score`", content)
-        self.assertNotIn("Rule: xiaohongshu.guidance.external_contact_or_download", scored_section)
-        self.assertNotIn("Rule: xiaohongshu.promotion.shutiao_review_stricter_context", scored_section)
+        self.assertIn("命中风险：没有确认命中 `Status: active` 规则。", content)
+        self.assertIn("它不支持本示例的 `总风险分`", content)
+        self.assertNotIn("规则：xiaohongshu.guidance.external_contact_or_download", scored_section)
+        self.assertNotIn("规则：xiaohongshu.promotion.shutiao_review_stricter_context", scored_section)
 
     def test_xiaohongshu_shutiao_context_alone_is_not_scored_signal(self):
         rules = read_package_file("rules/xiaohongshu.md")
@@ -362,40 +362,40 @@ class ContentComplianceSkillTest(unittest.TestCase):
     def test_report_template_includes_required_sections(self):
         report = read_package_file("templates/report.md")
         required_sections = [
-            "## 1. Basic Information",
-            "## 2. Overall Conclusion",
-            "## 3. Layer Safety Dashboard",
-            "## 4. Weakest Areas",
-            "## 5. Risk List",
-            "## 6. Promotion-Specific Notes",
-            "## 7. Pending Review Notes",
-            "## 8. Disclaimer",
+            "## 1. 基本信息",
+            "## 2. 总体结论",
+            "## 3. 分项安全诊断仪表盘",
+            "## 4. 最弱风险点",
+            "## 5. 风险清单",
+            "## 6. 投放专项提醒",
+            "## 7. 待复核提示",
+            "## 8. 免责声明",
         ]
         missing = [section for section in required_sections if section not in report]
         self.assertEqual(missing, [])
         for phrase in [
-            "Risk Bar",
-            "Layer | Safety Score | Visual Bar",
-            "Area Safety Score",
-            "Confirmed Risk Status",
+            "风险条",
+            "分项 | 安全诊断分 | 可视化条",
+            "分项安全诊断分",
+            "确认风险状态",
         ]:
             self.assertIn(phrase, report)
         self.assertIn(
-            "These notes are not part of the Total Risk Score unless the same evidence independently matches a `Status: active` rule.",
+            "这些提示不计入总风险分，除非同一证据也独立命中 `Status: active` 规则。",
             report,
         )
 
     def test_scoring_defines_visual_and_layer_scores(self):
         scoring = read_package_file("scoring.md")
         required_phrases = [
-            "For the visual bar, always use exactly 10 cells.",
-            "Risk Bar: 3/10 🟩🟩🟩⬜⬜⬜⬜⬜⬜⬜",
-            "Risk Bar: 5/10 🟨🟨🟨🟨🟨⬜⬜⬜⬜⬜",
-            "Risk Bar: 9/10 🟥🟥🟥🟥🟥🟥🟥🟥🟥⬜",
-            "Do not output both a final Risk Bar and a final Safety Bar.",
-            "Layer Safety Dashboard",
-            "external_guidance_download_comment_private_message_or_qr",
-            "Weakest Areas",
+            "风险条必须固定 10 格。",
+            "风险条：3/10 🟩🟩🟩⬜⬜⬜⬜⬜⬜⬜",
+            "风险条：5/10 🟨🟨🟨🟨🟨⬜⬜⬜⬜⬜",
+            "风险条：9/10 🟥🟥🟥🟥🟥🟥🟥🟥🟥⬜",
+            "不要同时输出最终风险条和最终安全条。",
+            "分项安全诊断仪表盘",
+            "外部引导/下载/评论/私信/二维码",
+            "最弱风险点",
         ]
         missing = [phrase for phrase in required_phrases if phrase not in scoring]
         self.assertEqual(missing, [])
@@ -411,7 +411,7 @@ class ContentComplianceSkillTest(unittest.TestCase):
         ]:
             content = read_package_file(relative_path)
             self.assertIn("免责声明：本报告为 AI 辅助合规参考", content)
-            self.assertIn("Total Risk Score:", content)
+            self.assertIn("总风险分：", content)
 
     def test_examples_include_score_breakdown_fields(self):
         for relative_path in [
@@ -421,12 +421,12 @@ class ContentComplianceSkillTest(unittest.TestCase):
             "examples/xiaohongshu-draft-review.md",
         ]:
             content = read_package_file(relative_path)
-            self.assertIn("Score Breakdown:", content)
-            self.assertIn("Risk Bar:", content)
-            self.assertIn("Layer Safety Dashboard:", content)
-            self.assertIn("Weakest Areas:", content)
+            self.assertIn("评分拆解：", content)
+            self.assertIn("风险条：", content)
+            self.assertIn("分项安全诊断仪表盘：", content)
+            self.assertIn("最弱风险点：", content)
             for field in SCORE_BREAKDOWN_FIELDS:
-                self.assertIn(f"- {field}:", content)
+                self.assertIn(field, content)
 
     def test_active_rules_include_traceability_without_evidence_limitations(self):
         for relative_path in ["rules/douyin.md", "rules/xiaohongshu.md"]:
@@ -636,7 +636,7 @@ Status: active
             example_file = copied_package / "examples" / "douyin-draft-review.md"
             original = example_file.read_text(encoding="utf-8")
             official_source_line = (
-                "  - Official Source: source.oceanengine.ad_management, "
+                "  - 官方来源：source.oceanengine.ad_management, "
                 "source.oceanengine.app_miniprogram_business_norm\n"
             )
             self.assertIn(official_source_line, original)

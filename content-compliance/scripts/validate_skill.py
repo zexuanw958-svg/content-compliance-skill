@@ -15,12 +15,12 @@ REQUIRED_OFFICIAL_DOMAINS = [
     "ad.xiaohongshu.com",
 ]
 REQUIRED_SCORE_BREAKDOWN_FACTORS = [
-    "severity",
-    "confidence",
-    "exposure",
-    "scenario",
-    "fix_difficulty",
-    "accumulation",
+    "严重度 severity",
+    "置信度 confidence",
+    "暴露范围 exposure",
+    "场景系数 scenario",
+    "修改难度 fix_difficulty",
+    "风险累积 accumulation",
 ]
 
 
@@ -49,7 +49,7 @@ RESEARCH_FILES = [
     "references/research/xiaohongshu-official-sources.md",
 ]
 
-PENDING_REVIEW_BOUNDARIES = {"- Pending Review Notes:", "- 待复核提示:"}
+PENDING_REVIEW_BOUNDARIES = {"- 待复核提示:", "- 待复核提示："}
 
 
 DISCLAIMER = (
@@ -82,14 +82,14 @@ def ensure_disclaimer() -> None:
 def ensure_report_sections() -> None:
     report = read("templates/report.md")
     required_sections = [
-        "## 1. Basic Information",
-        "## 2. Overall Conclusion",
-        "## 3. Layer Safety Dashboard",
-        "## 4. Weakest Areas",
-        "## 5. Risk List",
-        "## 6. Promotion-Specific Notes",
-        "## 7. Pending Review Notes",
-        "## 8. Disclaimer",
+        "## 1. 基本信息",
+        "## 2. 总体结论",
+        "## 3. 分项安全诊断仪表盘",
+        "## 4. 最弱风险点",
+        "## 5. 风险清单",
+        "## 6. 投放专项提醒",
+        "## 7. 待复核提示",
+        "## 8. 免责声明",
     ]
     missing = [section for section in required_sections if section not in report]
     if missing:
@@ -98,20 +98,18 @@ def ensure_report_sections() -> None:
 
 def ensure_report_score_breakdown() -> None:
     report = read("templates/report.md")
-    missing = [
-        factor for factor in REQUIRED_SCORE_BREAKDOWN_FACTORS if f"- {factor}:" not in report
-    ]
-    if "Score Breakdown:" not in report or missing:
+    missing = [factor for factor in REQUIRED_SCORE_BREAKDOWN_FACTORS if factor not in report]
+    if "评分拆解：" not in report or missing:
         fail(f"report template score breakdown missing fields: {missing}")
 
 
 def ensure_report_visual_fields() -> None:
     report = read("templates/report.md")
     required = [
-        "Risk Bar",
-        "Layer | Safety Score | Visual Bar",
-        "Area Safety Score",
-        "Confirmed Risk Status",
+        "风险条",
+        "分项 | 安全诊断分 | 可视化条",
+        "分项安全诊断分",
+        "确认风险状态",
     ]
     missing = [item for item in required if item not in report]
     if missing:
@@ -125,12 +123,12 @@ def ensure_scoring_constants() -> None:
         "severity 3: +0.5",
         "severity 4: +0.75",
         "accumulation cap: 2",
-        "For the visual bar, always use exactly 10 cells.",
-        "Risk Bar: 5/10 🟨🟨🟨🟨🟨⬜⬜⬜⬜⬜",
-        "Risk Bar: 9/10 🟥🟥🟥🟥🟥🟥🟥🟥🟥⬜",
-        "Do not output both a final Risk Bar and a final Safety Bar.",
-        "Layer Safety Dashboard",
-        "Weakest Areas",
+        "风险条必须固定 10 格。",
+        "风险条：5/10 🟨🟨🟨🟨🟨⬜⬜⬜⬜⬜",
+        "风险条：9/10 🟥🟥🟥🟥🟥🟥🟥🟥🟥⬜",
+        "不要同时输出最终风险条和最终安全条。",
+        "分项安全诊断仪表盘",
+        "最弱风险点",
     ]
     missing = [item for item in required if item not in scoring]
     if missing:
@@ -143,6 +141,39 @@ def ensure_scoring_constants() -> None:
     present = [item for item in forbidden if item in scoring]
     if present:
         fail(f"obsolete final-score visual fields still present: {present}")
+
+
+def ensure_user_visible_output_is_chinese() -> None:
+    user_output_paths = [
+        "templates/report.md",
+        "scoring.md",
+        "examples/douyin-topic-gate.md",
+        "examples/douyin-draft-review.md",
+        "examples/xiaohongshu-topic-gate.md",
+        "examples/xiaohongshu-draft-review.md",
+    ]
+    forbidden_labels = [
+        "Total Risk Score:",
+        "Risk Bar:",
+        "Layer Safety Dashboard",
+        "Weakest Areas:",
+        "Score Breakdown:",
+        "Platform:",
+        "Phase:",
+        "Recommendation:",
+        "Matched Risks:",
+        "Official Source:",
+        "Safer Revision:",
+        "Disclaimer",
+    ]
+    findings = []
+    for path in user_output_paths:
+        content = read(path)
+        for label in forbidden_labels:
+            if label in content:
+                findings.append(f"{path}: {label}")
+    if findings:
+        fail(f"user-visible output still has English report labels: {findings}")
 
 
 def ensure_official_source_messaging() -> None:
@@ -370,7 +401,7 @@ def iter_scored_example_rule_blocks(content: str):
         if stripped in PENDING_REVIEW_BOUNDARIES:
             break
 
-        rule = re.match(r"\s*-\s*Rule:\s*([A-Za-z0-9_.-]+)\s*$", line)
+        rule = re.match(r"\s*-\s*(?:Rule|规则)[：:]\s*([A-Za-z0-9_.-]+)\s*$", line)
         if rule:
             if current_rule_id:
                 yield current_rule_id, "\n".join(current_block)
@@ -395,32 +426,30 @@ def ensure_examples_are_complete(declared_source_ids: set[str]) -> None:
         content = read(example_path)
         if "免责声明：本报告为 AI 辅助合规参考" not in content:
             fail(f"example missing disclaimer: {example_path}")
-        if "Total Risk Score:" not in content:
+        if "总风险分：" not in content:
             fail(f"example missing risk score: {example_path}")
         missing_visual_fields = [
             field
             for field in [
-                "Risk Bar:",
-                "Layer Safety Dashboard:",
-                "Weakest Areas:",
+                "风险条：",
+                "分项安全诊断仪表盘：",
+                "最弱风险点：",
             ]
             if field not in content
         ]
         if missing_visual_fields:
             fail(f"example visual fields missing in {example_path}: {missing_visual_fields}")
         missing_score_breakdown_factors = [
-            factor
-            for factor in REQUIRED_SCORE_BREAKDOWN_FACTORS
-            if f"- {factor}:" not in content
+            factor for factor in REQUIRED_SCORE_BREAKDOWN_FACTORS if factor not in content
         ]
-        if "Score Breakdown:" not in content or missing_score_breakdown_factors:
+        if "评分拆解：" not in content or missing_score_breakdown_factors:
             fail(
                 f"example score breakdown missing fields in {example_path}: "
                 f"{missing_score_breakdown_factors}"
             )
         for rule_id, rule_block in iter_scored_example_rule_blocks(content):
             official_source = re.search(
-                r"^\s*-\s*Official Source:\s*([^\n]*)$",
+                r"^\s*-\s*(?:Official Source|官方来源)[：:]\s*([^\n]*)$",
                 rule_block,
                 flags=re.M,
             )
@@ -452,6 +481,7 @@ def main() -> int:
     ensure_report_score_breakdown()
     ensure_report_visual_fields()
     ensure_scoring_constants()
+    ensure_user_visible_output_is_chinese()
     ensure_official_source_messaging()
     source_statuses = ensure_sources_inventory()
     declared_source_ids = set(source_statuses)

@@ -1,13 +1,13 @@
 ---
 name: content-compliance
-description: Review Douyin and Xiaohongshu self-media topics, scripts, and visual descriptions using official-source-backed platform rule cards, a 1-10 risk score, a uniform-color visual risk bar, weak-area safety scores, rewrite suggestions, and a mandatory disclaimer. Use when the user says 检测, 合规检测, 内容合规, 审一下抖音/小红书选题, 查一下稿子风险, or asks whether a topic/script/visual plan can be posted or promoted.
+description: 面向国内中文自媒体创作者，按官方来源优先的抖音/小红书规则卡检测选题、口播稿、画面描述、评论区话术和投放计划，输出中文风险报告、1-10 总风险分、统一颜色风险条、分项安全诊断分、改法建议和免责声明。用户说 检测、合规检测、内容合规、审一下抖音/小红书选题、查一下稿子风险，或询问内容能不能发布/投放时使用。
 ---
 
-# Content Compliance Skill
+# 内容合规检测 Skill
 
-## Invocation
+## 调用方式
 
-Preferred Chinese trigger:
+推荐中文触发词：
 
 ```text
 检测
@@ -17,127 +17,143 @@ Preferred Chinese trigger:
 帮我查一下这段稿子有没有违规风险
 ```
 
-Slash-command aliases, when the runtime supports bundled commands:
+运行时支持斜杠命令时，可以使用：
 
 ```text
 /检测
 /content-compliance
 ```
 
-Use this skill when the user wants to check whether a self-media topic, title, script, oral draft, subtitle plan, visual description, or promotion plan is likely to create compliance risk on Douyin or Xiaohongshu.
+当用户想检查自媒体选题、标题、口播稿、字幕方案、画面描述、评论区计划、私信计划或投放计划是否可能产生抖音/小红书合规风险时，使用本 Skill。
 
-## Supported Platforms
+## 支持平台
 
-- Douyin, including ordinary posting and DOU+ / OceanEngine promotion contexts.
-- Xiaohongshu, including ordinary notes and Shutiao / Pgy / Juguang promotion contexts.
+- 抖音：普通发布、DOU+、巨量引擎/OceanEngine 投放语境。
+- 小红书：普通笔记、薯条、蒲公英/Pgy、聚光/Juguang 投放语境。
 
-## Source Policy
+## 输出语言
 
-Official-source-backed rules are required for confirmed risk findings.
+默认使用简体中文输出完整报告。
 
-Only `Status: active` rule matches enter confirmed risks and the final score. `Status: needs_review` matches must be reported separately as review-only / pending-review notes, not in confirmed risks or final score, unless the same evidence also independently matches an active rule.
+除 `Rule ID`、`source.*` 官方来源 ID、`Status: active`、`Status: needs_review` 等必要机器标识外，不要在用户可见报告里使用英文栏目名。不要输出英文版的总风险分、风险条、分项仪表盘、最弱风险点等字段标签，统一使用：
 
-Never claim that a report guarantees publishing approval, traffic delivery, ad approval, account safety, or legal compliance.
+```text
+总风险分
+风险条
+分项安全诊断仪表盘
+最弱风险点
+评分拆解
+待复核提示
+免责声明
+```
 
-## Workflow
+## 来源策略
 
-### Step 1: Identify Platform
+确认风险必须有官方来源支撑。
 
-If the platform is missing, ask one question:
+只有命中 `Status: active` 规则卡的内容，才能进入确认风险和总风险分。`Status: needs_review` 命中项必须单独写成待复核提示，不得计入确认风险或总风险分；除非同一证据也独立命中 active 规则。
+
+不要声称报告能保证发布通过、投放审核通过、获得流量推荐、账号安全或法律合规。
+
+## 工作流
+
+### 第 1 步：识别平台
+
+如果用户没有说明平台，只问一个问题：
 
 ```text
 老板，这次要按抖音还是小红书来审？
 ```
 
-If the user says Douyin, load `rules/douyin.md`. If the user says Xiaohongshu, load `rules/xiaohongshu.md`.
+如果用户说抖音，加载 `rules/douyin.md`。如果用户说小红书，加载 `rules/xiaohongshu.md`。
 
-### Step 2: Choose Review Mode
+### 第 2 步：选择检测模式
 
-Use Topic Gate when the user provides only a topic, rough angle, title idea, or outline.
+用户只提供选题、粗略角度、标题想法或大纲时，使用选题预审（Topic Gate）。
 
-Use Draft Review when the user provides any title, script, oral draft, subtitle plan, visual description, comment plan, private-message plan, promotion plan, or screenshot/video-frame description.
+用户提供了标题、口播稿、正文、字幕方案、画面描述、评论区计划、私信计划、投放计划、截图或视频帧描述时，使用成稿检测（Draft Review）。
 
-### Step 3: Collect Review Context
+### 第 3 步：整理检测上下文
 
-Extract:
-
-```text
-platform:
-phase:
-topic:
-title:
-script_or_copy:
-visual_description:
-comment_or_private_message_plan:
-promotion_plan:
-regulated_industry_context:
-```
-
-If a field is absent, leave it absent and review the provided material. Do not invent missing content.
-
-### Step 4: Check Risk Layers
-
-Review these layers:
+提取以下信息：
 
 ```text
-topic risk
-title or cover risk
-script or oral wording risk
-visual or subtitle risk
-external guidance, download, comment, private-message, or QR-code risk
-commercial or promotion review risk
-regulated-industry risk
+平台：
+阶段：
+选题：
+标题：
+口播/正文：
+画面描述：
+评论区/私信计划：
+投放计划：
+强监管行业背景：
 ```
 
-Assign every layer a `Layer Safety Score` from 1-10, where 10 means this layer looks safest and 1 means this layer is the weakest. Layers with no concern should usually score 9-10. A weak layer can receive a low safety score even when the concern is only a pending-review note, but label it as diagnostic rather than a confirmed active-rule risk.
+缺失字段就留空，只检测用户提供的材料。不要编造不存在的内容。
 
-### Step 5: Score
+### 第 4 步：检查风险分项
 
-Use `scoring.md`. Reports must explain the score using:
+检查这些分项：
 
 ```text
-severity
-confidence
-exposure
-scenario
-fix_difficulty
-accumulation
+选题风险
+标题/封面风险
+口播/正文话术风险
+画面/字幕风险
+外部引导/下载/评论/私信/二维码风险
+商业化/投放审核风险
+强监管行业风险
 ```
 
-Also include:
+给每个分项一个 `分项安全诊断分`，范围 1-10：10 表示该分项看起来最安全，1 表示该分项最弱。没有明显问题的分项通常给 9-10。即使某个弱点只是待复核提示，也可以给较低诊断分，但必须标注为“诊断提示/待复核”，不能写成确认 active 规则风险。
+
+### 第 5 步：评分
+
+使用 `scoring.md`。报告必须用简体中文解释评分，并包含这些评分因子：
 
 ```text
-Total Risk Score
-Risk Bar
-Layer Safety Dashboard
-Weakest Areas
+严重度 severity
+置信度 confidence
+暴露范围 exposure
+场景系数 scenario
+修改难度 fix_difficulty
+风险累积 accumulation
 ```
 
-Highlight the 1-3 lowest-scoring weak areas. Do not let a high overall score hide a local problem such as external download guidance, comment/private-message link acquisition, QR-code guidance, or promotion-specific qualification gaps.
-
-Do not output Overall Safety Score or Safety Bar for the final score. They are only inverse restatements of Total Risk Score and add visual noise. Keep one final `Total Risk Score` and one final `Risk Bar`. Use `Layer Safety Score` only inside the layer dashboard.
-
-### Step 6: Report
-
-Use `templates/report.md`. Every report must include the mandatory disclaimer.
-
-For each confirmed risk, cite:
+报告必须包含：
 
 ```text
-rule ID
-official source ID
-evidence location
-risk reason
-recommended revision
-conservative revision
+总风险分
+风险条
+分项安全诊断仪表盘
+最弱风险点
 ```
 
-For source gaps or `Status: needs_review` matches, say:
+突出安全诊断分最低的 1-3 个最弱分项。不要让总分掩盖局部问题，例如外部下载引导、评论/私信拿链接、二维码引导、投放资质缺口等。
+
+最终分只输出一个 `总风险分` 和一个 `风险条`。不要输出最终“整体安全分”、最终“安全条”或任何英文安全分/安全条字段。分项安全诊断分只放在分项安全诊断仪表盘里。
+
+### 第 6 步：输出报告
+
+使用 `templates/report.md`，报告栏目必须使用中文。每份报告必须包含免责声明。
+
+每条确认风险都要写清楚：
+
+```text
+命中规则
+官方来源
+证据位置
+为什么有风险
+推荐改法
+保守改法
+```
+
+如果是来源缺口或 `Status: needs_review` 命中项，使用这句话：
 
 ```text
 这条风险只能作为待复核提示，因为当前规则卡处于 `needs_review`，官方来源覆盖范围或规则解释仍需人工复核。
 ```
 
-## Output Tone
+## 输出语气
 
-Be practical and direct. Avoid absolute promises such as “必过”, “一定安全”, “绝对违规”, or “平台一定会处罚”.
+实用、直接、中文优先。避免绝对承诺，例如“必过”“一定安全”“绝对违规”“平台一定会处罚”。
