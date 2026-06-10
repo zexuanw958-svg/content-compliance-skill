@@ -32,6 +32,7 @@ REQUIRED_FILES = [
     "templates/report.md",
     "references/sources.md",
     "references/official-source-intake.md",
+    "references/rule-refresh.md",
     "references/research/douyin-official-sources.md",
     "references/research/xiaohongshu-official-sources.md",
     "commands/检测.md",
@@ -326,6 +327,37 @@ class ContentComplianceSkillTest(unittest.TestCase):
         ]
         missing = [domain for domain in required_domains if domain not in sources]
         self.assertEqual(missing, [])
+
+    def test_public_docs_are_official_first_without_overclaiming(self):
+        root_readme = (ROOT / "README.md").read_text(encoding="utf-8")
+        package_readme = read_package_file("README.md")
+        refresh = read_package_file("references/rule-refresh.md")
+        public_docs = "\n".join([root_readme, package_readme])
+
+        for phrase in [
+            "官方来源优先",
+            "Status: needs_review",
+            "不是自动实时同步所有平台规则",
+            "最终仍以平台官方审核",
+            "references/rule-refresh.md",
+        ]:
+            self.assertIn(phrase, public_docs)
+
+        for phrase in [
+            "does not guarantee complete coverage",
+            "does not automatically update rules in real time",
+            "Before every public tutorial, launch post, or video demo.",
+            "Avoid this phrasing",
+        ]:
+            self.assertIn(phrase, refresh)
+
+        for forbidden in [
+            "抓完所有官方规则",
+            "全部官方规则",
+            "所有官方规则全部",
+            "自动实时同步所有平台规则。",
+        ]:
+            self.assertNotIn(forbidden, public_docs)
 
     def test_report_template_includes_required_sections(self):
         report = read_package_file("templates/report.md")

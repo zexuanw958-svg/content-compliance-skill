@@ -5,14 +5,25 @@
 <p>
   <a href="https://github.com/zexuanw958-svg/content-compliance-skill"><img alt="GitHub 仓库" src="https://img.shields.io/badge/GitHub-content--compliance--skill-24292f?logo=github"></a>
   <img alt="MIT 许可证" src="https://img.shields.io/badge/License-MIT-0A7D5A">
-  <img alt="测试通过" src="https://img.shields.io/badge/%E6%B5%8B%E8%AF%95-25%20%E9%A1%B9%E9%80%9A%E8%BF%87-16A34A">
+  <img alt="测试通过" src="https://img.shields.io/badge/%E6%B5%8B%E8%AF%95-26%20%E9%A1%B9%E9%80%9A%E8%BF%87-16A34A">
   <img alt="支持平台" src="https://img.shields.io/badge/%E5%B9%B3%E5%8F%B0-%E6%8A%96%E9%9F%B3%20%7C%20%E5%B0%8F%E7%BA%A2%E4%B9%A6-C13584">
   <img alt="智能体运行时" src="https://img.shields.io/badge/Agent-Codex%20%7C%20Claude%20Code%20%7C%20OpenClaw%20%7C%20Hermes%20Agent-475467">
 </p>
 
-面向国内中文自媒体创作者的 `SKILL.md` 合规检测工具。它可以在 **Codex / Code X、Claude Code、OpenClaw、Hermes Agent** 等智能体运行时中使用，用来在发布前检查抖音、小红书内容的选题、口播、画面、评论区话术和投放计划。
+面向国内中文自媒体创作者的 `SKILL.md` 合规检测工具。它可以在 **Codex / Code X、Claude Code、OpenClaw、Hermes Agent** 等智能体运行时中使用，用来在发布前检查抖音、小红书内容的选题、口播、画面、评论区话术和投放计划，让你在发视频前更有底。
 
 日常唤醒方式：`检测`、`合规检测`、`内容合规检测`、`/检测`、`/content-compliance`。
+
+## 为什么更安心
+
+这个 Skill 不是拿网上通用说法凑一套“玄学审核规则”。它采用 **官方来源优先** 的规则整理方式：
+
+- 规则卡追溯到抖音、小红书、巨量引擎、蒲公英、聚光、薯条等公开官方来源。
+- 确认风险必须引用 `references/sources.md` 里的官方来源 ID。
+- 官方来源解释不够清楚、页面只是索引、动态页面只看到部分信息时，会标成 `Status: needs_review`，不会硬算成确认风险。
+- 项目内置 `content-compliance/references/rule-refresh.md` 作为官方来源定期复核流程，用来检查可公开访问的官方规则是否有可见更新，并同步到规则卡、示例和测试。
+
+边界也要说清楚：这不是自动实时同步所有平台规则，也不是平台官方审核工具。它提供的是发布前参考，最终仍以平台官方审核、账号状态、内容上下文和实际执行口径为准。
 
 ## 它解决什么问题
 
@@ -199,7 +210,7 @@ content-compliance/
   rules/                           # 抖音 / 小红书规则卡
   scoring.md                       # 风险分、可视化进度条和分项安全诊断分算法
   templates/report.md              # 检测报告模板
-  references/                      # 官方来源清单和调研记录
+  references/                      # 官方来源清单、调研记录和定期复核流程
   examples/                        # 抖音 / 小红书示例报告
   scripts/validate_skill.py        # Skill 包校验器
 tests/

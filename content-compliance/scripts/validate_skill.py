@@ -33,6 +33,7 @@ REQUIRED_FILES = [
     "templates/report.md",
     "references/sources.md",
     "references/official-source-intake.md",
+    "references/rule-refresh.md",
     "references/research/douyin-official-sources.md",
     "references/research/xiaohongshu-official-sources.md",
     "commands/检测.md",
@@ -142,6 +143,51 @@ def ensure_scoring_constants() -> None:
     present = [item for item in forbidden if item in scoring]
     if present:
         fail(f"obsolete final-score visual fields still present: {present}")
+
+
+def ensure_official_source_messaging() -> None:
+    root_readme_path = ROOT.parent / "README.md"
+    root_readme = root_readme_path.read_text(encoding="utf-8") if root_readme_path.exists() else ""
+    package_readme = read("README.md")
+    intake = read("references/official-source-intake.md")
+    refresh = read("references/rule-refresh.md")
+
+    required_public_phrases = [
+        "官方来源优先",
+        "Status: needs_review",
+        "不是自动实时同步所有平台规则",
+        "最终仍以平台官方审核",
+        "references/rule-refresh.md",
+    ]
+    public_blob = "\n".join([root_readme, package_readme])
+    missing = [phrase for phrase in required_public_phrases if phrase not in public_blob]
+    if missing:
+        fail(f"official-source public messaging missing: {missing}")
+
+    required_refresh_phrases = [
+        "official-source-first",
+        "does not guarantee complete coverage",
+        "does not automatically update rules in real time",
+        "Before every public tutorial, launch post, or video demo.",
+        "Avoid this phrasing",
+    ]
+    missing_refresh = [
+        phrase
+        for phrase in required_refresh_phrases
+        if phrase not in "\n".join([intake, refresh])
+    ]
+    if missing_refresh:
+        fail(f"official-source refresh policy missing: {missing_refresh}")
+
+    forbidden_public_claims = [
+        "抓完所有官方规则",
+        "全部官方规则",
+        "所有官方规则全部",
+        "自动实时同步所有平台规则。",
+    ]
+    present = [phrase for phrase in forbidden_public_claims if phrase in public_blob]
+    if present:
+        fail(f"overclaiming public messaging present: {present}")
 
 
 def iter_rule_cards():
@@ -406,6 +452,7 @@ def main() -> int:
     ensure_report_score_breakdown()
     ensure_report_visual_fields()
     ensure_scoring_constants()
+    ensure_official_source_messaging()
     source_statuses = ensure_sources_inventory()
     declared_source_ids = set(source_statuses)
     ensure_rule_cards_have_source_ids()
