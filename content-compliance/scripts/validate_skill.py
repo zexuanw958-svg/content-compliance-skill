@@ -128,12 +128,16 @@ def ensure_scoring_constants() -> None:
         "accumulation cap: 2",
         "Overall Safety Score: 11 - Total Risk Score",
         "For visual bars, always use exactly 10 cells.",
+        "Risk Bar fixed scale: 🟩🟩🟩🟩🟨🟨🟥🟥🟥🟥",
+        "Do not output a Risk Bar as only filled green cells",
         "Layer Safety Dashboard",
         "Weakest Areas",
     ]
     missing = [item for item in required if item not in scoring]
     if missing:
         fail(f"scoring constants missing: {missing}")
+    if "Risk Bar: 3/10 🟩🟩🟩⬜⬜⬜⬜⬜⬜⬜" in scoring:
+        fail("risk bar still uses misleading green fill-progress format")
 
 
 def iter_rule_cards():

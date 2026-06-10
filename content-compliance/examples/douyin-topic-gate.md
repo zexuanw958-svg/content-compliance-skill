@@ -16,7 +16,7 @@
 - Recommendation: 可继续做，但避免把内容包装成绕过限制、获取资源、领取链接或站外下载教程。
 - Risk Score: 2/10
 - Overall Safety Score: 9/10
-- Risk Bar: 2/10 🟩🟩⬜⬜⬜⬜⬜⬜⬜⬜
+- Risk Bar: 2/10 🟩🟩🟩🟩🟨🟨🟥🟥🟥🟥 (current: 2, low-risk zone)
 - Safety Bar: 9/10 🟩🟩🟩🟩🟩🟩🟩🟩🟩⬜
 - Score Breakdown:
   - severity: none; no confirmed `Status: active` rule match at topic stage.

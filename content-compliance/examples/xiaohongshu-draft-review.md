@@ -16,7 +16,7 @@
 - Recommendation: 先人工复核并修改后再发布；如计划薯条，应移除评论区领取和私信资源交付表达。
 - Risk Score: 3/10
 - Overall Safety Score: 8/10
-- Risk Bar: 3/10 🟩🟩🟩⬜⬜⬜⬜⬜⬜⬜
+- Risk Bar: 3/10 🟩🟩🟩🟩🟨🟨🟥🟥🟥🟥 (current: 3, low-risk zone)
 - Safety Bar: 8/10 🟩🟩🟩🟩🟩🟩🟩🟩⬜⬜
 - Score Breakdown:
   - severity: none; no confirmed `Status: active` rule independently scores the resource-claim wording.

@@ -360,7 +360,9 @@ class ContentComplianceSkillTest(unittest.TestCase):
         required_phrases = [
             "Overall Safety Score: 11 - Total Risk Score",
             "For visual bars, always use exactly 10 cells.",
-            "Risk Bar: 3/10",
+            "Risk Bar fixed scale: 🟩🟩🟩🟩🟨🟨🟥🟥🟥🟥",
+            "Do not output a Risk Bar as only filled green cells",
+            "Risk Bar: 3/10 🟩🟩🟩🟩🟨🟨🟥🟥🟥🟥",
             "Safety Bar: 8/10",
             "Layer Safety Dashboard",
             "external_guidance_download_comment_private_message_or_qr",
@@ -368,6 +370,7 @@ class ContentComplianceSkillTest(unittest.TestCase):
         ]
         missing = [phrase for phrase in required_phrases if phrase not in scoring]
         self.assertEqual(missing, [])
+        self.assertNotIn("Risk Bar: 3/10 🟩🟩🟩⬜⬜⬜⬜⬜⬜⬜", scoring)
 
     def test_examples_include_disclaimer_and_risk_score(self):
         for relative_path in [

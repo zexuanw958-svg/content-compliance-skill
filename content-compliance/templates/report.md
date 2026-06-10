@@ -13,8 +13,8 @@
 - Recommendation:
 - Total Risk Score:
 - Overall Safety Score:
-- Risk Bar:
-- Safety Bar:
+- Risk Bar: use fixed scale `🟩🟩🟩🟩🟨🟨🟥🟥🟥🟥` and label the current score / zone.
+- Safety Bar: fill cells equal to Overall Safety Score.
 - One-Sentence Rationale:
 - Score Breakdown:
   - severity:
