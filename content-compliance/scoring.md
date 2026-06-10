@@ -62,48 +62,39 @@ Reports must explain the score. Do not output only a number. Include the factors
 
 ## Visual Scores
 
-Reports must include both risk-oriented and safety-oriented visuals. These two bars have different semantics:
+Reports must include one risk-oriented visual for the final score:
 
 ```text
 Total Risk Score: 1-10, higher means riskier.
-Overall Safety Score: 11 - Total Risk Score, higher means safer.
 ```
 
-For visual bars, always use exactly 10 cells.
+For the visual bar, always use exactly 10 cells.
 
-Risk Bar is a fixed risk-zone scale, not a fill-progress bar. It must always show the whole green/yellow/red danger range:
+Risk Bar is a score-fill bar with one uniform color. Fill cells equal to Total Risk Score, leave the rest empty, and choose the filled-cell color from the score band:
 
 ```text
-Risk Bar cells 1-4: 🟩 low-risk zone
-Risk Bar cells 5-6: 🟨 medium-risk zone
-Risk Bar cells 7-10: 🟥 high-risk zone
-Risk Bar fixed scale: 🟩🟩🟩🟩🟨🟨🟥🟥🟥🟥
+1-4: 🟩 low-risk filled cells
+5-6: 🟨 medium-risk filled cells
+7-10: 🟥 high-risk filled cells
+Empty cells: ⬜
 ```
 
 Risk Bar output format:
 
 ```text
-Risk Bar: <score>/10 🟩🟩🟩🟩🟨🟨🟥🟥🟥🟥 (current: <score>, <low-risk|medium-risk|high-risk> zone)
+Risk Bar: <score>/10 <filled cells in one band color><empty cells> (<low-risk|medium-risk|high-risk>)
 ```
 
-Do not output a Risk Bar as only filled green cells such as `🟩🟩🟩⬜⬜⬜⬜⬜⬜⬜`. That looks like a safety progress bar and hides the yellow/red danger zones.
+Do not output both a final Risk Bar and a final Safety Bar. Overall safety is only the inverse of risk and adds visual noise. Keep one final risk score and one final risk bar.
 
-Safety Bar is a safety-capacity fill bar. It fills cells equal to Overall Safety Score and uses the safety score's band color:
-
-```text
-1-4: 🟥 low-safety filled cells
-5-7: 🟨 medium-safety filled cells
-8-10: 🟩 high-safety filled cells
-Empty cells: ⬜
-```
+Layer Safety Scores remain useful because they identify weak local areas. Keep them in the Layer Safety Dashboard.
 
 Examples:
 
 ```text
-Risk Bar: 3/10 🟩🟩🟩🟩🟨🟨🟥🟥🟥🟥 (current: 3, low-risk zone)
-Safety Bar: 8/10 🟩🟩🟩🟩🟩🟩🟩🟩⬜⬜
-Risk Bar: 7/10 🟩🟩🟩🟩🟨🟨🟥🟥🟥🟥 (current: 7, high-risk zone)
-Safety Bar: 3/10 🟥🟥🟥⬜⬜⬜⬜⬜⬜⬜
+Risk Bar: 3/10 🟩🟩🟩⬜⬜⬜⬜⬜⬜⬜ (low-risk)
+Risk Bar: 5/10 🟨🟨🟨🟨🟨⬜⬜⬜⬜⬜ (medium-risk)
+Risk Bar: 9/10 🟥🟥🟥🟥🟥🟥🟥🟥🟥⬜ (high-risk)
 ```
 
 ## Layer Safety Scores

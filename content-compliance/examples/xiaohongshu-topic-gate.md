@@ -13,9 +13,7 @@
 - Phase: topic_gate
 - Recommendation: 可以继续做，但标题和封面应避免夸大、神化工具效果或设计成资料领取入口。
 - Risk Score: 2/10
-- Overall Safety Score: 9/10
-- Risk Bar: 2/10 🟩🟩🟩🟩🟨🟨🟥🟥🟥🟥 (current: 2, low-risk zone)
-- Safety Bar: 9/10 🟩🟩🟩🟩🟩🟩🟩🟩🟩⬜
+- Risk Bar: 2/10 🟩🟩⬜⬜⬜⬜⬜⬜⬜⬜ (low-risk)
 - Score Breakdown:
   - severity: none; no confirmed `Status: active` rule match at topic stage.
   - confidence: no confirmed risk evidence; this is baseline caution.

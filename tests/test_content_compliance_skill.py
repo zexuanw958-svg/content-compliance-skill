@@ -189,9 +189,9 @@ class ContentComplianceSkillTest(unittest.TestCase):
             "/检测",
             "/content-compliance",
             "合规检测",
-            "Overall Safety Score",
             "Layer Safety Dashboard",
             "Weakest Areas",
+            "Do not output Overall Safety Score or Safety Bar",
         ]
         missing = [phrase for phrase in required_phrases if phrase not in skill]
         self.assertEqual(missing, [])
@@ -342,9 +342,7 @@ class ContentComplianceSkillTest(unittest.TestCase):
         missing = [section for section in required_sections if section not in report]
         self.assertEqual(missing, [])
         for phrase in [
-            "Overall Safety Score",
             "Risk Bar",
-            "Safety Bar",
             "Layer | Safety Score | Visual Bar",
             "Area Safety Score",
             "Confirmed Risk Status",
@@ -358,19 +356,19 @@ class ContentComplianceSkillTest(unittest.TestCase):
     def test_scoring_defines_visual_and_layer_scores(self):
         scoring = read_package_file("scoring.md")
         required_phrases = [
-            "Overall Safety Score: 11 - Total Risk Score",
-            "For visual bars, always use exactly 10 cells.",
-            "Risk Bar fixed scale: 🟩🟩🟩🟩🟨🟨🟥🟥🟥🟥",
-            "Do not output a Risk Bar as only filled green cells",
-            "Risk Bar: 3/10 🟩🟩🟩🟩🟨🟨🟥🟥🟥🟥",
-            "Safety Bar: 8/10",
+            "For the visual bar, always use exactly 10 cells.",
+            "Risk Bar: 3/10 🟩🟩🟩⬜⬜⬜⬜⬜⬜⬜",
+            "Risk Bar: 5/10 🟨🟨🟨🟨🟨⬜⬜⬜⬜⬜",
+            "Risk Bar: 9/10 🟥🟥🟥🟥🟥🟥🟥🟥🟥⬜",
+            "Do not output both a final Risk Bar and a final Safety Bar.",
             "Layer Safety Dashboard",
             "external_guidance_download_comment_private_message_or_qr",
             "Weakest Areas",
         ]
         missing = [phrase for phrase in required_phrases if phrase not in scoring]
         self.assertEqual(missing, [])
-        self.assertNotIn("Risk Bar: 3/10 🟩🟩🟩⬜⬜⬜⬜⬜⬜⬜", scoring)
+        self.assertNotIn("Overall Safety Score: 11 - Total Risk Score", scoring)
+        self.assertNotIn("Risk Bar fixed scale", scoring)
 
     def test_examples_include_disclaimer_and_risk_score(self):
         for relative_path in [
@@ -392,9 +390,7 @@ class ContentComplianceSkillTest(unittest.TestCase):
         ]:
             content = read_package_file(relative_path)
             self.assertIn("Score Breakdown:", content)
-            self.assertIn("Overall Safety Score:", content)
             self.assertIn("Risk Bar:", content)
-            self.assertIn("Safety Bar:", content)
             self.assertIn("Layer Safety Dashboard:", content)
             self.assertIn("Weakest Areas:", content)
             for field in SCORE_BREAKDOWN_FIELDS:

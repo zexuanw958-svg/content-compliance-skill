@@ -107,9 +107,7 @@ def ensure_report_score_breakdown() -> None:
 def ensure_report_visual_fields() -> None:
     report = read("templates/report.md")
     required = [
-        "Overall Safety Score",
         "Risk Bar",
-        "Safety Bar",
         "Layer | Safety Score | Visual Bar",
         "Area Safety Score",
         "Confirmed Risk Status",
@@ -126,18 +124,24 @@ def ensure_scoring_constants() -> None:
         "severity 3: +0.5",
         "severity 4: +0.75",
         "accumulation cap: 2",
-        "Overall Safety Score: 11 - Total Risk Score",
-        "For visual bars, always use exactly 10 cells.",
-        "Risk Bar fixed scale: 🟩🟩🟩🟩🟨🟨🟥🟥🟥🟥",
-        "Do not output a Risk Bar as only filled green cells",
+        "For the visual bar, always use exactly 10 cells.",
+        "Risk Bar: 5/10 🟨🟨🟨🟨🟨⬜⬜⬜⬜⬜",
+        "Risk Bar: 9/10 🟥🟥🟥🟥🟥🟥🟥🟥🟥⬜",
+        "Do not output both a final Risk Bar and a final Safety Bar.",
         "Layer Safety Dashboard",
         "Weakest Areas",
     ]
     missing = [item for item in required if item not in scoring]
     if missing:
         fail(f"scoring constants missing: {missing}")
-    if "Risk Bar: 3/10 🟩🟩🟩⬜⬜⬜⬜⬜⬜⬜" in scoring:
-        fail("risk bar still uses misleading green fill-progress format")
+    forbidden = [
+        "Overall Safety Score: 11 - Total Risk Score",
+        "Safety Bar: fill cells equal to Overall Safety Score",
+        "Risk Bar fixed scale",
+    ]
+    present = [item for item in forbidden if item in scoring]
+    if present:
+        fail(f"obsolete final-score visual fields still present: {present}")
 
 
 def iter_rule_cards():
@@ -350,9 +354,7 @@ def ensure_examples_are_complete(declared_source_ids: set[str]) -> None:
         missing_visual_fields = [
             field
             for field in [
-                "Overall Safety Score:",
                 "Risk Bar:",
-                "Safety Bar:",
                 "Layer Safety Dashboard:",
                 "Weakest Areas:",
             ]

@@ -108,14 +108,14 @@ Also include:
 
 ```text
 Total Risk Score
-Overall Safety Score
 Risk Bar
-Safety Bar
 Layer Safety Dashboard
 Weakest Areas
 ```
 
 Highlight the 1-3 lowest-scoring weak areas. Do not let a high overall score hide a local problem such as external download guidance, comment/private-message link acquisition, QR-code guidance, or promotion-specific qualification gaps.
+
+Do not output Overall Safety Score or Safety Bar for the final score. They are only inverse restatements of Total Risk Score and add visual noise. Keep one final `Total Risk Score` and one final `Risk Bar`. Use `Layer Safety Score` only inside the layer dashboard.
 
 ### Step 6: Report
 
